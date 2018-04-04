@@ -62,7 +62,8 @@ configurations {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
 	compile('org.springframework.shell:spring-shell-starter:2.0.0.RELEASE')
-	testCompile("junit:junit")
+//	testCompile("junit:junit")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 task wrapper(type: Wrapper) {

@@ -1,0 +1,20 @@
+command list:
+1. from --srcFolder --rootPackage --excludes
+2. to --dstFolder --rootPackage
+
+
+how to debug:
+ java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -jar .\build\libs\copy-project-boot.jar
+ gradle -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n bootRun
+ 
+ 
+ JLineShellAutoConfiguration hooks all together.
+ 
+ ## runner
+ 
+ ApplicationRunner vs CommandLineRunner. They two different on arguments.
+ 
+ 
+ SpringApplication.callRunners will call ApplicationRunners and CommandLineRunners in context.
+ 
+ ResultHandlers is passed in to Shell.
