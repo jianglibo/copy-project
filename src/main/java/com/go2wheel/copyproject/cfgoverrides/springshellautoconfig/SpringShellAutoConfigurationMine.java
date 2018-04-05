@@ -29,6 +29,7 @@ import org.springframework.shell.SpringShellAutoConfiguration;
 @Import(ResultHandlerConfigMine.class)
 public class SpringShellAutoConfigurationMine {
 
+	@SuppressWarnings("rawtypes")
 	@Bean
 	@Qualifier("spring-shell")
 	public ConversionService shellConversionService(ApplicationContext applicationContext) {
@@ -55,6 +56,7 @@ public class SpringShellAutoConfigurationMine {
 		return Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Bean
 	public Shell shell(@Qualifier("main") ResultHandler handler) {
 		return new Shell(handler);

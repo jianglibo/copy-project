@@ -7,7 +7,6 @@ import javax.validation.constraints.Pattern;
 
 import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedString;
-import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +22,7 @@ public class CopyProjectCommands {
 
 	public static String PACKAGE_PATTERN = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$";
 
+	@SuppressWarnings("unused")
 	private Terminal terminal;
 	
 	private SourceHolder sourceHolder;

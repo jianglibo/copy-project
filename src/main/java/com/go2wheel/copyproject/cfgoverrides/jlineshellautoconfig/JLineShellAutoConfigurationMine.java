@@ -45,9 +45,6 @@ import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.JLineShellAutoConfiguration;
 import org.springframework.shell.jline.PromptProvider;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import org.springframework.shell.jline.JLineShellAutoConfiguration.CompleterAdapter;
-
-import com.go2wheel.copyproject.MirrorOfInteractiveShellApplicationRunner;
 
 /**
  * If I satisfied the objects created in {@link JLineShellAutoConfiguration} leave it as was, or else create mine.

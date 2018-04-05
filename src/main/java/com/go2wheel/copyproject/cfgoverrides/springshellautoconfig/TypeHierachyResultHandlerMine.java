@@ -5,10 +5,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ResolvableType;
 import org.springframework.shell.ResultHandler;
-import org.springframework.stereotype.Component;
 
 public class TypeHierachyResultHandlerMine implements ResultHandler<Object> {
 
@@ -20,10 +18,12 @@ public class TypeHierachyResultHandlerMine implements ResultHandler<Object> {
 			return;
 		}
 		Class<?> clazz = result.getClass();
+		@SuppressWarnings("rawtypes")
 		ResultHandler handler = getResultHandler(clazz);
 		handler.handleResult(result);
 	}
 
+	@SuppressWarnings("rawtypes")
 	private ResultHandler getResultHandler(Class<?> clazz) {
 		ResultHandler handler = resultHandlers.get(clazz);
 		if (handler != null) {
