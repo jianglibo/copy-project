@@ -4,9 +4,13 @@ command list:
 
 
 how to debug:
- java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -jar .\build\libs\copy-project-boot.jar
- gradle -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n bootRun
+
+java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=y -jar .\build\libs\copy-project-boot.jar
+
+gradle -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n bootRun
  
+grade bootJar -t
+
  
  JLineShellAutoConfiguration hooks all together.
  
@@ -18,3 +22,10 @@ how to debug:
  SpringApplication.callRunners will call ApplicationRunners and CommandLineRunners in context.
  
  ResultHandlers is passed in to Shell.
+ 
+ExtendedDefaultParserMine line 114.
+if (eofOnEscapedNewLine && isEscapeChar(line, line.length() - 1)) {
+	throw new EOFError(-1, -1, "Escaped new line", "newline");
+}
+
+Shell. set parameterResolvers.

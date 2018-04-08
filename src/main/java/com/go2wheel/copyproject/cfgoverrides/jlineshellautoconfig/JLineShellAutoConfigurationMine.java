@@ -47,8 +47,6 @@ import org.springframework.shell.jline.PromptProvider;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import org.springframework.shell.jline.JLineShellAutoConfiguration.CompleterAdapter;
 
-import com.go2wheel.copyproject.MirrorOfInteractiveShellApplicationRunner;
-
 /**
  * If I satisfied the objects created in {@link JLineShellAutoConfiguration} leave it as was, or else create mine.
  * @author jianglib@gmail.com
@@ -75,18 +73,25 @@ public class JLineShellAutoConfigurationMine {
 			throw new BeanCreationException("Could not create Terminal: " + e.getMessage());
 		}
 	}
-
+	
+	
 	@Bean
 	@ConditionalOnProperty(prefix = SPRING_SHELL_INTERACTIVE, value = InteractiveShellApplicationRunner.ENABLED, havingValue = "true", matchIfMissing = true)
 	public ApplicationRunner interactiveApplicationRunner(Parser parser, Environment environment) {
-		return new InteractiveShellApplicationRunner(lineReader(), promptProvider, parser, shell, environment);
+		return new InteractiveShellApplicationRunnerMine(lineReader(), promptProvider, parser, shell, environment);
 	}
 
-	@Bean
-	@ConditionalOnProperty(prefix = SPRING_SHELL_SCRIPT, value = ScriptShellApplicationRunner.ENABLED, havingValue = "true", matchIfMissing = true)
-	public ApplicationRunner scriptApplicationRunner(Parser parser, ConfigurableEnvironment environment) {
-		return new ScriptShellApplicationRunner(parser, shell, environment);
-	}
+//	@Bean
+//	@ConditionalOnProperty(prefix = SPRING_SHELL_INTERACTIVE, value = InteractiveShellApplicationRunner.ENABLED, havingValue = "true", matchIfMissing = true)
+//	public ApplicationRunner interactiveApplicationRunner(Parser parser, Environment environment) {
+//		return new InteractiveShellApplicationRunner(lineReader(), promptProvider, parser, shell, environment);
+//	}
+
+//	@Bean
+//	@ConditionalOnProperty(prefix = SPRING_SHELL_SCRIPT, value = ScriptShellApplicationRunner.ENABLED, havingValue = "true", matchIfMissing = true)
+//	public ApplicationRunner scriptApplicationRunner(Parser parser, ConfigurableEnvironment environment) {
+//		return new ScriptShellApplicationRunner(parser, shell, environment);
+//	}
 
 
 	@Bean
@@ -137,7 +142,8 @@ public class JLineShellAutoConfigurationMine {
 	public Parser parser() {
 		ExtendedDefaultParserMine parser = new ExtendedDefaultParserMine();
 		parser.setEofOnUnclosedQuote(true);
-		parser.setEofOnEscapedNewLine(true);
+		parser.setEofOnEscapedNewLine(false);
+//		parser.setEofOnEscapedNewLine(true);
 		return parser;
 	}
 

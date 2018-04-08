@@ -63,8 +63,8 @@ public class ResultHandlerConfigMine {
 	}
 
 	@Bean
-	public ThrowableResultHandler throwableResultHandler() {
-		return new ThrowableResultHandler();
+	public ThrowableResultHandlerMine throwableResultHandler() {
+		return new ThrowableResultHandlerMine();
 	}
 
 }

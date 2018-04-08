@@ -1,4 +1,4 @@
-package com.go2wheel.copyproject;
+package com.go2wheel.copyproject.cfgoverrides.jlineshellautoconfig;
 
 import org.jline.reader.LineReader;
 import org.jline.reader.Parser;
@@ -21,7 +21,7 @@ import org.springframework.shell.jline.PromptProvider;
  *
  */
 @Order(InteractiveShellApplicationRunner.PRECEDENCE)
-public class MirrorOfInteractiveShellApplicationRunner  implements ApplicationRunner {
+public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner {
 
 
 	private final LineReader lineReader;
@@ -34,7 +34,7 @@ public class MirrorOfInteractiveShellApplicationRunner  implements ApplicationRu
 
 	private final Environment environment;
 
-	public MirrorOfInteractiveShellApplicationRunner(LineReader lineReader, PromptProvider promptProvider, Parser parser, Shell shell, Environment environment) {
+	public InteractiveShellApplicationRunnerMine(LineReader lineReader, PromptProvider promptProvider, Parser parser, Shell shell, Environment environment) {
 		this.lineReader = lineReader;
 		this.promptProvider = promptProvider;
 		this.parser = parser;
@@ -45,7 +45,11 @@ public class MirrorOfInteractiveShellApplicationRunner  implements ApplicationRu
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		InputProvider inputProvider = new JLineInputProvider(lineReader, promptProvider);
-		shell.run(inputProvider);
+//		try {
+			shell.run(inputProvider);
+//		} catch (Exception e) {
+//			System.out.println("1111111111111");
+//		}
 	}
 
 
@@ -73,8 +77,13 @@ public class MirrorOfInteractiveShellApplicationRunner  implements ApplicationRu
 					return Input.EMPTY;
 				}
 			}
-			return new MirrorOfParsedLineInput(lineReader.getParsedLine());
+			return new ParsedLineInputMine(lineReader.getParsedLine());
 		}
+	}
+
+
+	public boolean isEnabled() {
+		return true;
 	}
 
 }
