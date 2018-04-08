@@ -10,12 +10,10 @@ import org.springframework.shell.ResultHandler;
 import org.springframework.shell.TerminalSizeAware;
 import org.springframework.shell.result.AttributedCharSequenceResultHandler;
 import org.springframework.shell.result.DefaultResultHandler;
-import org.springframework.shell.result.IterableResultHandler;
 import org.springframework.shell.result.ParameterValidationExceptionResultHandler;
 import org.springframework.shell.result.ResultHandlerConfig;
 import org.springframework.shell.result.TerminalSizeAwareResultHandler;
 import org.springframework.shell.result.ThrowableResultHandler;
-import org.springframework.shell.result.TypeHierarchyResultHandler;
 
 /**
  * @see ResultHandlerConfig

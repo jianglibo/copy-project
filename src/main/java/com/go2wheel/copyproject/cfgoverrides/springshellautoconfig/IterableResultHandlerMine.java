@@ -2,6 +2,7 @@ package com.go2wheel.copyproject.cfgoverrides.springshellautoconfig;
 
 import org.springframework.shell.ResultHandler;
 
+@SuppressWarnings("rawtypes")
 public class IterableResultHandlerMine implements ResultHandler<Iterable> {
 
 	private ResultHandler delegate;
