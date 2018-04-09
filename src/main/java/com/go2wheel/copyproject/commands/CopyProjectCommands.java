@@ -33,11 +33,22 @@ public class CopyProjectCommands {
 		this.terminal = terminal;
 	}
 
+	/**
+	 * Validates happen before command execution.
+	 * 
+	 * @param srcFolder
+	 * @param dstFolder
+	 * @param srcRootPackage
+	 * @param dstRootPackage
+	 * @param excludes
+	 */
 	@ShellMethod(value = "tell which project folder to copy.", key = "from")
 	public void source(@NotNull File srcFolder,
-			@Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String rootPackage,
+			@NotNull File dstFolder,
+			@Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String srcRootPackage,
+			@Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String dstRootPackage,
 			@ShellOption(help="semicolon separated file patterns.") ListOfExcludes excludes) {
-		this.sourceHolder = new SourceHolder(srcFolder, excludes, rootPackage);
+		this.sourceHolder = new SourceHolder(srcFolder, excludes, srcRootPackage);
 		System.out.println(this.sourceHolder);
 	}
 

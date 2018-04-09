@@ -37,7 +37,7 @@ public class StandardAPIAutoConfigurationMine {
 
 	@Bean
 	public ValueProvider fileValueProvider() {
-		return new FileValueProvider();
+		return new FileValueProviderMine();
 	}
 
 	@Bean

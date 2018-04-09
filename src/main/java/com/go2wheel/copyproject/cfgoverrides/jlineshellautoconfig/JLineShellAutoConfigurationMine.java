@@ -1,7 +1,6 @@
 package com.go2wheel.copyproject.cfgoverrides.jlineshellautoconfig;
 
 import static org.springframework.shell.jline.InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE;
-import static org.springframework.shell.jline.ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -35,7 +34,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.shell.CompletingParsedLine;
 import org.springframework.shell.CompletionContext;
@@ -44,8 +42,6 @@ import org.springframework.shell.Shell;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.JLineShellAutoConfiguration;
 import org.springframework.shell.jline.PromptProvider;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import org.springframework.shell.jline.JLineShellAutoConfiguration.CompleterAdapter;
 
 /**
  * If I satisfied the objects created in {@link JLineShellAutoConfiguration} leave it as was, or else create mine.
