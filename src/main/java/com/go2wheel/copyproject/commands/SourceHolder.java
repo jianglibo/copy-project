@@ -6,14 +6,11 @@ public class SourceHolder {
 	
 	private File directory;
 	
-	private ListOfExcludes excludes;
-	
 	private String rootPackage;
 
-	public SourceHolder(File directory, ListOfExcludes excludes, String rootPackage) {
+	public SourceHolder(File directory, String rootPackage) {
 		super();
 		this.directory = directory;
-		this.excludes = excludes;
 		this.rootPackage = rootPackage;
 	}
 
@@ -23,14 +20,6 @@ public class SourceHolder {
 
 	public void setDirectory(File directory) {
 		this.directory = directory;
-	}
-
-	public ListOfExcludes getExcludes() {
-		return excludes;
-	}
-
-	public void setExcludes(ListOfExcludes excludes) {
-		this.excludes = excludes;
 	}
 
 	public String getRootPackage() {
