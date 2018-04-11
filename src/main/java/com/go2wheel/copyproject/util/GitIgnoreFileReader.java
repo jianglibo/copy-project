@@ -23,7 +23,7 @@ public class GitIgnoreFileReader {
 				if (line.endsWith("/")) {
 					ls.add(line.substring(0, line.length() - 1));
 					ls.add(line);
-					line = line + "*";
+					line = line + "**";
 				}
 				ls.add(line);
 				ls.sort(new Comparator<String>() {

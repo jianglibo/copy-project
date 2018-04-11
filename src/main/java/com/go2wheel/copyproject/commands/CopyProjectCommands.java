@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
@@ -24,11 +24,15 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import com.go2wheel.copyproject.exception.DstFolderAlreadyExistException;
+import com.go2wheel.copyproject.exception.FilesWalkException;
 import com.go2wheel.copyproject.exception.NoIgnoreFileException;
 import com.go2wheel.copyproject.exception.SrcFolderNotExistException;
 import com.go2wheel.copyproject.util.GitIgnoreFileReader;
-import com.go2wheel.copyproject.util.OneFileCopyResult;
 import com.go2wheel.copyproject.util.PathUtil;
+import com.go2wheel.copyproject.value.CopyDescription;
+import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
+import com.go2wheel.copyproject.value.CopyDescriptionBuilder;
+import com.go2wheel.copyproject.value.CopyResult;
 
 
 @ShellComponent()
@@ -42,8 +46,6 @@ public class CopyProjectCommands {
 
 	@SuppressWarnings("unused")
 	private Terminal terminal;
-	
-	private SourceHolder sourceHolder;
 
 	@Autowired
 	@Lazy
@@ -60,13 +62,12 @@ public class CopyProjectCommands {
 	 * @param dstRootPackage
 	 */
 	@ShellMethod(value = "tell which project folder to copy.", key = "from")
-	public void copyProject(@NotNull File srcFolder,
+	public CopyResult copyProject(@NotNull File srcFolder,
 			@NotNull File dstFolder,
 			@ShellOption(defaultValue="world")
 			@Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String srcRootPackage,
 			@Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String dstRootPackage) {
-		this.sourceHolder = new SourceHolder(srcFolder, srcRootPackage);
-		doCopy(srcFolder.toPath().toAbsolutePath().normalize(), dstFolder.toPath().toAbsolutePath().normalize(), srcRootPackage, dstRootPackage);
+		return doCopy(srcFolder.toPath().toAbsolutePath().normalize(), dstFolder.toPath().toAbsolutePath().normalize(), srcRootPackage, dstRootPackage);
 	}
 
 	@Bean
@@ -74,7 +75,7 @@ public class CopyProjectCommands {
 		return () -> new AttributedString("my-shell:>", AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW));
 	}
 	
-	protected void doCopy(Path srcFolder, Path dstFolder, String srcRootPackage, String dstRootPackage) {
+	protected CopyResult doCopy(Path srcFolder, Path dstFolder, String srcRootPackage, String dstRootPackage) {
 		if (!(Files.exists(srcFolder) && Files.isDirectory(srcFolder))) {
 			throw new SrcFolderNotExistException(srcFolder.toAbsolutePath().normalize().toString());
 		}
@@ -90,33 +91,39 @@ public class CopyProjectCommands {
 		if (!Files.exists(ignoreFile)) {
 			throw new NoIgnoreFileException();
 		}
-		do1(ignoreFile, srcFolder, dstFolder, PathUtil.replaceDotWithSlash(srcRootPackage), PathUtil.replaceDotWithSlash(dstRootPackage));
+		return do1(ignoreFile, srcFolder, dstFolder, PathUtil.replaceDotWithSlash(srcRootPackage), PathUtil.replaceDotWithSlash(dstRootPackage));
 	}
 	
-	protected void do1(Path ignoreFile, Path srcFolder, Path dstFolder, String srcRootPackageSlash, String dstRootPackageSlash) {
+	protected CopyResult do1(Path ignoreFile, Path srcFolder, Path dstFolder, String srcRootPackageSlash, String dstRootPackageSlash) {
+		
 		List<PathMatcher> pms = GitIgnoreFileReader.ignoreMatchers(ignoreFile);
+		CopyDescriptionBuilder cdBuilder = new CopyDescriptionBuilder(srcFolder, dstFolder, srcRootPackageSlash, dstRootPackageSlash, pms);
+		
 		try (Stream<Path> files = Files.walk(srcFolder)) {
-			files.map(p -> srcFolder.relativize(p)).filter(p ->	!(pms.stream().anyMatch(pm -> pm.matches(p)))).map(p -> {
-				return new Path[] {srcFolder.resolve(p), dstFolder.resolve(calNewPath(p, srcRootPackageSlash, dstRootPackageSlash))};
-			}).map(pathPair -> {
-				try {
-					if (Files.isDirectory(pathPair[0]) && !Files.exists(pathPair[1])) {
-						Files.createDirectories(pathPair[1]);
-					}
-					Files.copy(pathPair[0], pathPair[1]);
-					return new OneFileCopyResult();
-				} catch (IOException e) {
-					return new OneFileCopyResult(pathPair);
+			return files.map(p -> srcFolder.relativize(p).normalize()).map(p -> cdBuilder.buildOne(p)).map(copyDescription -> {
+				
+				if (copyDescription.isIgnored()) {
+					return copyDescription;
 				}
-			}); //.reduce(identity, accumulator, combiner)
+				
+				if (copyDescription.createTargetDirectoryIfNeed()) {
+					return copyDescription;
+				}
+				return copyOneFile(copyDescription);
+
+			}).collect(CopyResult::new, CopyResult::accept, CopyResult::combine);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new FilesWalkException(e.getMessage());
 		}
 	}
 	
-	protected Path calNewPath(Path originRelative, String srcRootPackage, String dstRootPackage) {
-		String replaced = originRelative.normalize().toString().replaceAll("\\\\", "/").replace(srcRootPackage, dstRootPackage);
-		return Paths.get(replaced);
+	protected CopyDescription copyOneFile(CopyDescription copyDescription) {
+		try {
+			Files.copy(copyDescription.getSrcAb(), copyDescription.getDstAb());
+			copyDescription.setState(COPY_STATE.FILE_COPY_SUCCESSED);
+		} catch (IOException e) {
+			copyDescription.setState(COPY_STATE.FILE_COPY_FAILED);
+		}
+		return copyDescription;
 	}
-
 }
