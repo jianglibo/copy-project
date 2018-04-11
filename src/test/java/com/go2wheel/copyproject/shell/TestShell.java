@@ -10,15 +10,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.MethodTarget;
 import org.springframework.shell.ResultHandler;
 import org.springframework.shell.Shell;
-import org.springframework.shell.result.TypeHierarchyResultHandler;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.go2wheel.copyproject.UtilForTe;
+import com.go2wheel.copyproject.cfgoverrides.springshellautoconfig.TypeHierarchyResultHandlerMine;
 
 @SpringBootTest("spring.shell.interactive.enabled=false")
 @RunWith(SpringRunner.class)
@@ -48,7 +47,7 @@ public class TestShell {
 		MethodTarget mt = shell.listCommands().get("clear");
 		mt.getMethod().invoke(mt.getBean());
 		UtilForTe.printme(mt.getBean());
-		assertTrue("should be instance of TypeHierarchyResultHandler", resultHandler instanceof TypeHierarchyResultHandler);
+		assertTrue("should be instance of TypeHierarchyResultHandler", resultHandler instanceof TypeHierarchyResultHandlerMine);
 		
 	}
 

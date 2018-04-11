@@ -15,7 +15,7 @@ import com.go2wheel.copyproject.value.CopyDescription.COPY_TYPE;
 
 public class TestCopyDescription {
 	
-	private CopyDescriptionBuilder cdBuilder = new CopyDescriptionBuilder(Paths.get(""), Paths.get(""), "a.b", "c.d", new ArrayList<>());
+	private CopyDescriptionBuilder cdBuilder = new CopyDescriptionBuilder(Paths.get(""), Paths.get("../abc"), "a.b", "c.d", new ArrayList<>());
 
 	
 	@Test

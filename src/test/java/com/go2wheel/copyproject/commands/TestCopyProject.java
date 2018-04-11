@@ -5,11 +5,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +17,8 @@ import org.junit.Test;
 import com.go2wheel.copyproject.UtilForTe;
 import com.go2wheel.copyproject.exception.DstFolderAlreadyExistException;
 import com.go2wheel.copyproject.value.CopyDescription;
-import com.go2wheel.copyproject.value.CopyResult;
 import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
+import com.go2wheel.copyproject.value.CopyResult;
 
 public class TestCopyProject {
 	
@@ -41,24 +38,7 @@ public class TestCopyProject {
 	@After
 	public void after() throws IOException {
 		if (tmpFolder != null) {
-			Files.walkFileTree(tmpFolder, new SimpleFileVisitor<Path>() {
-			    @Override
-			    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-			        throws IOException
-			    {
-			    	Files.delete(file);
-			        return FileVisitResult.CONTINUE;
-			    }
-		    @Override
-		    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-		        throws IOException
-		    {
-		    	Files.delete(dir);
-		        if (exc != null)
-		            throw exc;
-		        return FileVisitResult.CONTINUE;
-		    }
-			});
+			UtilForTe.deleteFolder(tmpFolder);
 		}
 	}
 	
@@ -88,8 +68,6 @@ public class TestCopyProject {
 		
 		assertTrue("no file coping failed.", fileCopyfailed.isEmpty());
 		assertTrue("no directory coping failed.", dirCopyfailed.isEmpty());
-		
-		
 	}
 
 }

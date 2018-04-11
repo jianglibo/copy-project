@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.shell.ResultHandler;
 
-public class TypeHierachyResultHandlerMine implements ResultHandler<Object> {
+public class TypeHierarchyResultHandlerMine implements ResultHandler<Object> {
 
 	private Map<Class<?>, ResultHandler<?>> resultHandlers = new HashMap<>();
 

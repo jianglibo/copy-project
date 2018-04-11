@@ -22,7 +22,7 @@ public class TestReduce {
 	
 	@Before
 	public void before() {
-		cdBuilder = new CopyDescriptionBuilder(Paths.get(""), Paths.get(""), "a.b", "c.d", new ArrayList<>());
+		cdBuilder = new CopyDescriptionBuilder(Paths.get(""), Paths.get("../abc"), "a.b", "c.d", new ArrayList<>());
 	}
 
 //	@Test

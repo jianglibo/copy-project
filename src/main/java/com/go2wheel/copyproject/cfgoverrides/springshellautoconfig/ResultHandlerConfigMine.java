@@ -26,7 +26,7 @@ public class ResultHandlerConfigMine {
 	@Bean
 	@Qualifier("main")
 	public ResultHandler<?> mainResultHandler() {
-		return new TypeHierachyResultHandlerMine();
+		return new TypeHierarchyResultHandlerMine();
 	}
 
 	@Bean
