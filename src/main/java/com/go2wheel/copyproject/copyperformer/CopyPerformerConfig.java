@@ -1,15 +1,15 @@
-package com.go2wheel.copyproject.copyexecutor;
+package com.go2wheel.copyproject.copyperformer;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CopyExecutorConfig {
+public class CopyPerformerConfig {
 
 	@Bean
 	@Qualifier("main")
-	public CopyExecutor mainCopyExecutor() {
+	public CopyPerformer mainCopyPerformer() {
 		return new CopyHub();
 	}
 }

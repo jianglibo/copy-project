@@ -6,8 +6,6 @@ import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.CommandRegistry;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.result.TerminalAwareResultHandler;
 import org.springframework.shell.result.ThrowableResultHandler;
 import org.springframework.util.StringUtils;
 

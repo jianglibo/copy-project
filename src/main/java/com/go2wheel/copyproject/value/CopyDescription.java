@@ -6,31 +6,21 @@ import java.nio.file.Path;
 
 public class CopyDescription {
 
-	public static enum COPY_TYPE {
-		JAVA_SOURCE, OTHERS
-	}
-	
 	public static enum COPY_STATE {
 		START, IGNORED, DIR_CREATE_SUCCESS, DIR_CREATE_FAILED, DIR_EXISTS, FILE_COPY_FAILED, FILE_COPY_SUCCESSED 
 	}
 
+	private Path srcRelative;
 	private Path srcAb;
 	private Path dstAb;
 
 	private boolean relativePathChanged;
 
-	private COPY_TYPE copyType = COPY_TYPE.OTHERS;
-	
 	private COPY_STATE state = COPY_STATE.START;
-	
-	protected CopyDescription(Path srcAb) {
-		super();
-		this.srcAb = srcAb;
-		this.state = COPY_STATE.IGNORED;
-	}
 
-	protected CopyDescription(Path srcAb, Path dstAb, boolean relativePathChanged) {
+	protected CopyDescription(Path srcRelative, Path srcAb, Path dstAb, boolean relativePathChanged) {
 		super();
+		this.srcRelative = srcRelative;
 		this.srcAb = srcAb;
 		this.dstAb = dstAb;
 		this.setRelativePathChanged(relativePathChanged);
@@ -38,10 +28,6 @@ public class CopyDescription {
 	}
 
 	private void initMe() {
-		String s = srcAb.getFileName().toString();
-		if (s.endsWith(".java")) {
-			copyType = COPY_TYPE.JAVA_SOURCE;
-		}
 	}
 	
 	
@@ -72,7 +58,11 @@ public class CopyDescription {
 		}
 	}
 	
-	public Path getSrcAb() {
+	public Path getSrcRelative() {
+		return srcRelative;
+	}
+	
+	public Path getSrcAbsolute() {
 		return srcAb;
 	}
 
@@ -86,14 +76,6 @@ public class CopyDescription {
 
 	public void setDstAb(Path dstAb) {
 		this.dstAb = dstAb;
-	}
-
-	public COPY_TYPE getCopyType() {
-		return copyType;
-	}
-
-	public void setCopyType(COPY_TYPE copyType) {
-		this.copyType = copyType;
 	}
 
 	public boolean isRelativePathChanged() {

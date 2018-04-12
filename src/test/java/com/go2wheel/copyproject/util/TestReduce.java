@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import org.junit.Before;
@@ -22,7 +21,7 @@ public class TestReduce {
 	
 	@Before
 	public void before() {
-		cdBuilder = new CopyDescriptionBuilder(Paths.get(""), Paths.get("../abc"), "a.b", "c.d", new ArrayList<>());
+		cdBuilder = new CopyDescriptionBuilder(Paths.get(""), Paths.get("../abc"), "a.b", "c.d");
 	}
 
 //	@Test

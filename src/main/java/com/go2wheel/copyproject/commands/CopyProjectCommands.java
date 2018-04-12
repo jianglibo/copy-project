@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
-import java.util.List;
 import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
@@ -19,12 +17,12 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import com.go2wheel.copyproject.copyexecutor.CopyExecutor;
+import com.go2wheel.copyproject.copyperformer.CopyPerformer;
 import com.go2wheel.copyproject.exception.DstFolderAlreadyExistException;
 import com.go2wheel.copyproject.exception.FilesWalkException;
-import com.go2wheel.copyproject.exception.NoIgnoreFileException;
 import com.go2wheel.copyproject.exception.SrcFolderNotExistException;
-import com.go2wheel.copyproject.util.GitIgnoreFileReader;
+import com.go2wheel.copyproject.ignorechecker.IgnoreChecker;
+import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 import com.go2wheel.copyproject.value.CopyDescriptionBuilder;
 import com.go2wheel.copyproject.value.CopyEnv;
 import com.go2wheel.copyproject.value.CopyResult;
@@ -35,16 +33,14 @@ public class CopyProjectCommands {
 
 	public static String PACKAGE_PATTERN = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$";
 	
-	private static String COPY_IGNORE_FILE = "copyignore.txt";
-	
-	private static String GIT_IGNORE_FILE = ".gitignore";
-	
 	private CopyEnv copyEnv;
 
 	@SuppressWarnings("unused")
 	private Terminal terminal;
 	
-	private CopyExecutor copyHub;
+	private CopyPerformer copyHub;
+	
+	private IgnoreChecker ignoreHub;
 
 	/**
 	 * Validates happen before command execution.
@@ -73,25 +69,23 @@ public class CopyProjectCommands {
 		if (Files.exists(copyEnv.getDstFolder())) {
 			throw new DstFolderAlreadyExistException(copyEnv.getDstFolder().toAbsolutePath().normalize().toString());
 		}
-		
-		Path ignoreFile = copyEnv.getSrcFolder().resolve(COPY_IGNORE_FILE);
-		if (!Files.exists(ignoreFile)) {
-			ignoreFile = copyEnv.getSrcFolder().resolve(GIT_IGNORE_FILE);
-		}
-		
-		if (!Files.exists(ignoreFile)) {
-			throw new NoIgnoreFileException();
-		}
-		copyEnv.setIgnoreFile(ignoreFile);
-		List<PathMatcher> pms = GitIgnoreFileReader.ignoreMatchers(ignoreFile);
-		copyEnv.setPathMatchers(pms);
+		ignoreHub.initCondition(copyEnv);
 		return do1(copyEnv);
 	}
 	
 	protected CopyResult do1(CopyEnv copyEnv) {
 		CopyDescriptionBuilder cdBuilder = new CopyDescriptionBuilder(copyEnv);
 		try (Stream<Path> files = Files.walk(copyEnv.getSrcFolder())) {
-			return files.map(p -> copyEnv.getSrcFolder().relativize(p).normalize()).map(p -> cdBuilder.buildOne(p)).map(copyDescription -> {
+			return files.map(p -> copyEnv.getSrcFolder().relativize(p).normalize())
+					.map(p -> cdBuilder.buildOne(p))
+					.map(copyDescription -> {
+						boolean ignore = ignoreHub.ignore(copyEnv, copyDescription);
+						if (ignore) {
+							copyDescription.setState(COPY_STATE.IGNORED);
+						}
+						return copyDescription;
+					})
+					.map(copyDescription -> {
 				
 				if (copyDescription.isIgnored()) {
 					return copyDescription;
@@ -111,7 +105,7 @@ public class CopyProjectCommands {
 	
 	@Autowired
 	@Qualifier("main")
-	public void setCopyHub(CopyExecutor copyHub) {
+	public void setCopyHub(CopyPerformer copyHub) {
 		this.copyHub = copyHub;
 	}
 
@@ -119,6 +113,12 @@ public class CopyProjectCommands {
 	@Lazy
 	public void setTerminal(Terminal terminal) {
 		this.terminal = terminal;
+	}
+
+	@Autowired
+	@Qualifier("main")
+	public void setIgnoreHub(IgnoreChecker ignoreHub) {
+		this.ignoreHub = ignoreHub;
 	}
 
 	

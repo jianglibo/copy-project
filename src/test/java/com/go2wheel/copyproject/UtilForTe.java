@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.go2wheel.copyproject.copyexecutor.CopyExecutor;
-import com.go2wheel.copyproject.copyexecutor.CopyHub;
-import com.go2wheel.copyproject.copyexecutor.DefaultCopyExecutor;
+import com.go2wheel.copyproject.copyperformer.CopyHub;
+import com.go2wheel.copyproject.copyperformer.CopyPerformer;
+import com.go2wheel.copyproject.copyperformer.DefaultCopyPerformer;
+import com.go2wheel.copyproject.ignorechecker.GlobIgnoreChecker;
+import com.go2wheel.copyproject.ignorechecker.IgnoreChecker;
+import com.go2wheel.copyproject.ignorechecker.IgnoreCheckerHub;
 
 public class UtilForTe {
 	
@@ -26,13 +29,25 @@ public class UtilForTe {
 		return currentRelativePath.relativize(currentRelativePath.resolve(fn));
 	}
 	
-	public static CopyHub createCopyHub(CopyExecutor...ces) {
+	public static CopyHub createCopyHub(CopyPerformer...ces) {
 		CopyHub ch = new CopyHub();
-		List<CopyExecutor> cesl = new ArrayList<>();
+		List<CopyPerformer> cesl = new ArrayList<>();
 		cesl.addAll(Arrays.asList(ces));
-		cesl.add(new DefaultCopyExecutor());
+		cesl.add(new DefaultCopyPerformer());
 		ch.setCopyExecutors(cesl);
 		return ch;
+	}
+	
+	
+	public static IgnoreCheckerHub createIgnoreHub(IgnoreChecker...igs) {
+		IgnoreCheckerHub igh = new IgnoreCheckerHub();
+		List<IgnoreChecker> cesl = new ArrayList<>();
+		cesl.addAll(Arrays.asList(igs));
+		if (igs.length == 0) {
+			cesl.add(new GlobIgnoreChecker());
+		}
+		igh.setCheckers(cesl);
+		return igh;
 	}
 	
 	public static void deleteFolder(Path folder) throws IOException {

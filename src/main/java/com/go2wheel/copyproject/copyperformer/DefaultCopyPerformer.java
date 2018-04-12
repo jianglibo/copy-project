@@ -1,4 +1,4 @@
-package com.go2wheel.copyproject.copyexecutor;
+package com.go2wheel.copyproject.copyperformer;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,9 +15,9 @@ import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 
 @Component
 @Priority(Integer.MAX_VALUE)
-public class DefaultCopyExecutor implements CopyExecutor {
+public class DefaultCopyPerformer implements CopyPerformer {
 	
-	private Logger logger = LoggerFactory.getLogger(DefaultCopyExecutor.class);
+	private Logger logger = LoggerFactory.getLogger(DefaultCopyPerformer.class);
 
 	@Override
 	public boolean copy(CopyEnv copyEnv, CopyDescription copyDescription) {
@@ -25,7 +25,7 @@ public class DefaultCopyExecutor implements CopyExecutor {
 			if (Files.exists(copyDescription.getDstAb())) {
 				return true;
 			}
-			Files.copy(copyDescription.getSrcAb(), copyDescription.getDstAb());
+			Files.copy(copyDescription.getSrcAbsolute(), copyDescription.getDstAb());
 			copyDescription.setState(COPY_STATE.FILE_COPY_SUCCESSED);
 		} catch (IOException e) {
 			logger.info(e.getMessage());

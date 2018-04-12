@@ -18,7 +18,7 @@ import org.springframework.shell.Shell;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.util.StringUtils;
 
-//@TestConfiguration
+@TestConfiguration
 public class CopyProjectApplicationRunnerConfiguration {
 
 	@Autowired

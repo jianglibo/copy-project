@@ -28,10 +28,12 @@ public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner
 
 	private final PromptProvider promptProvider;
 
+	@SuppressWarnings("unused")
 	private final Parser parser;
 
 	private final Shell shell;
 
+	@SuppressWarnings("unused")
 	private final Environment environment;
 
 	public InteractiveShellApplicationRunnerMine(LineReader lineReader, PromptProvider promptProvider, Parser parser, Shell shell, Environment environment) {

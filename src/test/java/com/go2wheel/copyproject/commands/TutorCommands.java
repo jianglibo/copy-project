@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.Size;
@@ -25,7 +24,6 @@ import org.springframework.shell.table.CellMatchers;
 import org.springframework.shell.table.KeyValueHorizontalAligner;
 import org.springframework.shell.table.KeyValueSizeConstraints;
 import org.springframework.shell.table.KeyValueTextWrapper;
-import org.springframework.shell.table.MapFormatter;
 import org.springframework.shell.table.SimpleHorizontalAligner;
 import org.springframework.shell.table.Table;
 import org.springframework.shell.table.TableBuilder;

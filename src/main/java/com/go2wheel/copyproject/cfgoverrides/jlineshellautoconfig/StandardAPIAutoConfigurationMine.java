@@ -10,7 +10,6 @@ import org.springframework.shell.MethodTargetRegistrar;
 import org.springframework.shell.ParameterResolver;
 import org.springframework.shell.standard.CommandValueProvider;
 import org.springframework.shell.standard.EnumValueProvider;
-import org.springframework.shell.standard.FileValueProvider;
 import org.springframework.shell.standard.StandardAPIAutoConfiguration;
 import org.springframework.shell.standard.StandardMethodTargetRegistrar;
 import org.springframework.shell.standard.StandardParameterResolver;
@@ -18,7 +17,7 @@ import org.springframework.shell.standard.ValueProvider;
 
 /**
  * copy from {@link StandardAPIAutoConfiguration}
- * @author admin
+ * @author jianglibo@gmail.com
  *
  */
 

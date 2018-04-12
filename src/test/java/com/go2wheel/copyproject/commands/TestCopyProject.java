@@ -55,13 +55,15 @@ public class TestCopyProject {
 		CopyProjectCommands cpc = new CopyProjectCommands();
 		cpc.setCopyHub(UtilForTe.createCopyHub());
 		
+		cpc.setIgnoreHub(UtilForTe.createIgnoreHub());
+		
 		CopyResult cr = cpc.copyProject(origin.toFile(), target.toFile(), "com.demo.pk", "org.demo.pp");
 		
 		assertThat("all file should be copied.", cr.total(), equalTo(fileCount));
 		
 		List<CopyDescription> ignored = cr.getDescriptionMap().get(COPY_STATE.IGNORED);
 		ignored.forEach(cd -> {
-			System.out.println(cd.getSrcAb());
+			System.out.println(cd.getSrcAbsolute());
 		});
 		assertThat(ignored.size(), equalTo(6));
 		
