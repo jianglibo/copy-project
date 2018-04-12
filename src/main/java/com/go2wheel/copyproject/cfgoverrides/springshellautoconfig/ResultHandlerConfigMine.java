@@ -13,7 +13,6 @@ import org.springframework.shell.result.DefaultResultHandler;
 import org.springframework.shell.result.ParameterValidationExceptionResultHandler;
 import org.springframework.shell.result.ResultHandlerConfig;
 import org.springframework.shell.result.TerminalSizeAwareResultHandler;
-import org.springframework.shell.result.ThrowableResultHandler;
 
 /**
  * @see ResultHandlerConfig

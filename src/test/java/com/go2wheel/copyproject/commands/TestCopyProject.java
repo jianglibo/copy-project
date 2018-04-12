@@ -53,6 +53,8 @@ public class TestCopyProject {
 	public void t() throws IOException {
 		Path target = tmpFolder.resolve("inner");
 		CopyProjectCommands cpc = new CopyProjectCommands();
+		cpc.setCopyHub(UtilForTe.createCopyHub());
+		
 		CopyResult cr = cpc.copyProject(origin.toFile(), target.toFile(), "com.demo.pk", "org.demo.pp");
 		
 		assertThat("all file should be copied.", cr.total(), equalTo(fileCount));

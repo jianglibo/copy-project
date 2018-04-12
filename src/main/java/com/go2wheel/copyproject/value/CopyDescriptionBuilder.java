@@ -17,12 +17,23 @@ public class CopyDescriptionBuilder {
 	private final Path srcFolder;
 	private final Path dstFolder;
 	
-	public CopyDescriptionBuilder(Path srcFolder, Path dstFolder, String srcRootPackageSlash, String dstRootPackageSlash, List<PathMatcher> pms) {
+	public CopyDescriptionBuilder(Path srcFolder, Path dstFolder, String srcRootPackage, String dstRootPackage, List<PathMatcher> pms) {
 		this.srcFolder = srcFolder.normalize();
 		this.dstFolder = dstFolder.normalize();
-		this.srcRootPackageSlash = srcRootPackageSlash.replace('.', '/');
-		this.dstRootPackageSlash = dstRootPackageSlash.replace('.', '/');
+		this.srcRootPackageSlash = srcRootPackage.replace('.', '/');
+		this.dstRootPackageSlash = dstRootPackage.replace('.', '/');
 		this.pms = pms;
+		if (this.dstFolder.startsWith(this.srcFolder) || this.srcFolder.equals(this.dstFolder)) {
+			throw new TargetOverlapSourceException(this.srcFolder.toString(), this.dstFolder.toString());
+		}
+	}
+	
+	public CopyDescriptionBuilder(CopyEnv copyEnv) {
+		this.srcFolder = copyEnv.getSrcFolder();
+		this.dstFolder = copyEnv.getDstFolder();
+		this.srcRootPackageSlash = copyEnv.getSrcRootPackageDot().replace('.', '/');
+		this.dstRootPackageSlash = copyEnv.getDstRootPackageDot().replace('.', '/');
+		this.pms = copyEnv.getPathMatchers();
 		if (this.dstFolder.startsWith(this.srcFolder) || this.srcFolder.equals(this.dstFolder)) {
 			throw new TargetOverlapSourceException(this.srcFolder.toString(), this.dstFolder.toString());
 		}

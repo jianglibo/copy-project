@@ -7,17 +7,32 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.go2wheel.copyproject.copyexecutor.CopyExecutor;
+import com.go2wheel.copyproject.copyexecutor.CopyHub;
+import com.go2wheel.copyproject.copyexecutor.DefaultCopyExecutor;
 
 public class UtilForTe {
 	
 	public static void printme(Object o) {
 		System.out.println(o);
 	}
-	
-	
+
 	public static Path getPathInThisProjectRelative(String fn) {
 		Path currentRelativePath = Paths.get("").toAbsolutePath();
 		return currentRelativePath.relativize(currentRelativePath.resolve(fn));
+	}
+	
+	public static CopyHub createCopyHub(CopyExecutor...ces) {
+		CopyHub ch = new CopyHub();
+		List<CopyExecutor> cesl = new ArrayList<>();
+		cesl.addAll(Arrays.asList(ces));
+		cesl.add(new DefaultCopyExecutor());
+		ch.setCopyExecutors(cesl);
+		return ch;
 	}
 	
 	public static void deleteFolder(Path folder) throws IOException {
