@@ -8,27 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.go2wheel.copyproject.util.PriorityComparator;
 import com.go2wheel.copyproject.value.CopyDescription;
 import com.go2wheel.copyproject.value.CopyEnv;
+import com.go2wheel.copyproject.value.StepResult;
 
 public class IgnoreCheckerHub implements IgnoreChecker {
 	
 	private List<IgnoreChecker> checkers;
 
-	@Override
-	public boolean stopCheckNext() {
-		return true;
-	}
 
 	@Override
-	public boolean ignore(CopyEnv copyEnv, CopyDescription copyDescription) {
+	public StepResult<Boolean> ignore(CopyEnv copyEnv, CopyDescription copyDescription) {
+		StepResult<Boolean> sr = null;
 		for( IgnoreChecker ic : checkers) {
-			boolean ig = ic.ignore(copyEnv, copyDescription);
-			if (ig) {
-				return true;
-			} else if(ic.stopCheckNext()) {
-				return ig;
+			sr = ic.ignore(copyEnv, copyDescription);
+			if (!sr.isTsuduku()) {
+				return sr;
 			}
 		}
-		return false;
+		return sr;
 	}
 
 	public List<IgnoreChecker> getCheckers() {

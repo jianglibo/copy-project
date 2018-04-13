@@ -1,13 +1,11 @@
 package com.go2wheel.copyproject.value;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class CopyDescription {
 
 	public static enum COPY_STATE {
-		START, IGNORED, DIR_CREATE_SUCCESS, DIR_CREATE_FAILED, DIR_EXISTS, FILE_COPY_FAILED, FILE_COPY_SUCCESSED 
+		START, IGNORED, FILE_COPY_FAILED, FILE_COPY_SUCCESSED 
 	}
 
 	private Path srcRelative;
@@ -17,8 +15,13 @@ public class CopyDescription {
 	private boolean relativePathChanged;
 
 	private COPY_STATE state = COPY_STATE.START;
+	
+	public CopyDescription(Path srcFolder, Path srcRelative) {
+		this.srcRelative = srcRelative;
+		this.srcAb = srcFolder.resolve(srcRelative);
+	}
 
-	protected CopyDescription(Path srcRelative, Path srcAb, Path dstAb, boolean relativePathChanged) {
+	public CopyDescription(Path srcRelative, Path srcAb, Path dstAb, boolean relativePathChanged) {
 		super();
 		this.srcRelative = srcRelative;
 		this.srcAb = srcAb;
@@ -30,32 +33,14 @@ public class CopyDescription {
 	private void initMe() {
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("[%s, %s, %s -> %s]", getState(), isRelativePathChanged(), getSrcAbsolute(), getDstAb());
+	}
+	
 	
 	public boolean isIgnored() {
 		return this.state == COPY_STATE.IGNORED;
-	}
-	
-	public boolean isDirectoryOperated() {
-		return this.state == COPY_STATE.DIR_CREATE_FAILED || this.state == COPY_STATE.DIR_CREATE_SUCCESS || this.state == COPY_STATE.DIR_EXISTS;
-	}
-	
-	
-	public boolean createTargetDirectoryIfNeed() {
-		if (Files.isDirectory(srcAb)) {
-			if (Files.exists(dstAb)) {
-				this.state = COPY_STATE.DIR_EXISTS;
-			} else {
-				try {
-					Files.createDirectories(dstAb);
-					this.state = COPY_STATE.DIR_CREATE_SUCCESS;
-				} catch (IOException e) {
-					this.state = COPY_STATE.DIR_CREATE_FAILED;
-				}
-			}
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	public Path getSrcRelative() {

@@ -34,7 +34,6 @@ public class CopyResult {
     	countMap.put(thatState, nl);
     	switch (thatState) {
 		case FILE_COPY_SUCCESSED:
-		case DIR_CREATE_SUCCESS:
 			break;
 		default:
 			descriptionMap.get(cd.getState()).add(cd);

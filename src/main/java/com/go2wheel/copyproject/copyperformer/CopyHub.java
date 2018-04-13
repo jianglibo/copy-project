@@ -8,19 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.go2wheel.copyproject.util.PriorityComparator;
 import com.go2wheel.copyproject.value.CopyDescription;
 import com.go2wheel.copyproject.value.CopyEnv;
+import com.go2wheel.copyproject.value.StepResult;
 
 public class CopyHub implements CopyPerformer {
 	
 	private List<CopyPerformer> copyPerformers;
 
 	@Override
-	public boolean copy(CopyEnv copyEnv, CopyDescription copyDescription) {
+	public StepResult<Void> copy(CopyEnv copyEnv, CopyDescription copyDescription) {
+		StepResult<Void> sr = null;
 		for(CopyPerformer ce : copyPerformers) {
-			if (ce.copy(copyEnv, copyDescription)) {
-				return true;
+			sr = ce.copy(copyEnv, copyDescription);
+			if (!sr.isTsuduku()) {
+				return sr;
 			}
 		}
-		return false;
+		return sr;
 	}
 	
 	

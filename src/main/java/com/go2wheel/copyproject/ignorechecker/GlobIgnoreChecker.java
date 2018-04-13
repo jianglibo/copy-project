@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.go2wheel.copyproject.util.GitIgnoreFileReader;
 import com.go2wheel.copyproject.value.CopyDescription;
 import com.go2wheel.copyproject.value.CopyEnv;
+import com.go2wheel.copyproject.value.StepResult;
 
 @Component
 public class GlobIgnoreChecker implements IgnoreChecker {
@@ -22,13 +23,9 @@ public class GlobIgnoreChecker implements IgnoreChecker {
 	private List<PathMatcher> matchers = new ArrayList<>();
 
 	@Override
-	public boolean stopCheckNext() {
-		return false;
-	}
-
-	@Override
-	public boolean ignore(CopyEnv copyEnv, CopyDescription copyDescription) {
-		return matchers.stream().anyMatch(pm -> pm.matches(copyDescription.getSrcRelative()));
+	public StepResult<Boolean> ignore(CopyEnv copyEnv, CopyDescription copyDescription) {
+		boolean b = matchers.stream().anyMatch(pm -> pm.matches(copyDescription.getSrcRelative()));
+		return new StepResult<Boolean>(b, false);
 	}
 
 	@Override

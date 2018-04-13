@@ -17,6 +17,10 @@ import com.go2wheel.copyproject.copyperformer.DefaultCopyPerformer;
 import com.go2wheel.copyproject.ignorechecker.GlobIgnoreChecker;
 import com.go2wheel.copyproject.ignorechecker.IgnoreChecker;
 import com.go2wheel.copyproject.ignorechecker.IgnoreCheckerHub;
+import com.go2wheel.copyproject.pathadjuster.DefaultPathAdjuster;
+import com.go2wheel.copyproject.pathadjuster.PathAdjuster;
+import com.go2wheel.copyproject.pathadjuster.PathAdjusterHub;
+import com.go2wheel.copyproject.value.CopyEnv;
 
 public class UtilForTe {
 	
@@ -50,6 +54,17 @@ public class UtilForTe {
 		return igh;
 	}
 	
+	public static PathAdjusterHub createPathAdjusterHub(PathAdjuster...pas) {
+		PathAdjusterHub igh = new PathAdjusterHub();
+		List<PathAdjuster> cesl = new ArrayList<>();
+		cesl.addAll(Arrays.asList(pas));
+		cesl.add(new DefaultPathAdjuster());
+		igh.setAdjusters(cesl);
+		return igh;
+
+		
+	}
+	
 	public static void deleteFolder(Path folder) throws IOException {
 		Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
 		    @Override
@@ -69,6 +84,23 @@ public class UtilForTe {
 	        return FileVisitResult.CONTINUE;
 	    }
 		});
+	}
+	
+	
+	public static CopyEnv copyEnv() {
+		return new CopyEnv(Paths.get(""), Paths.get("..", "abc"), "a.b.c", "c.d.e");
+	}
+	
+	public static CopyEnv copyEnv(String srcRootPackageDot, String dstRootPackageDot) {
+		return new CopyEnv(Paths.get(""), Paths.get("..", "abc"), srcRootPackageDot, dstRootPackageDot);
+	}
+	
+	public static CopyEnv copyEnvDemoproject(Path dstFolder, String srcRootPackageDot, String dstRootPackageDot) {
+		return new CopyEnv(Paths.get("fixtures", "demoproject"), dstFolder, srcRootPackageDot, dstRootPackageDot);
+	}
+	
+	public static Path createTmpDirectory() throws IOException {
+		return Files.createTempDirectory("tmpdirforpc");
 	}
 	
 	public static Path createFileTree(String...fns) throws IOException {

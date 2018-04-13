@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import com.go2wheel.copyproject.UtilForTe;
 import com.go2wheel.copyproject.exception.DstFolderAlreadyExistException;
+import com.go2wheel.copyproject.pathadjuster.JavaPackagedFilePathAdjuster;
 import com.go2wheel.copyproject.value.CopyDescription;
 import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 import com.go2wheel.copyproject.value.CopyResult;
@@ -40,6 +41,9 @@ public class TestCopyProject {
 		if (tmpFolder != null) {
 			UtilForTe.deleteFolder(tmpFolder);
 		}
+		tmpFolder = null;
+		origin = null;
+		fileCount = 0;
 	}
 	
 	@Test(expected = DstFolderAlreadyExistException.class)
@@ -50,15 +54,15 @@ public class TestCopyProject {
 	}
 	
 	@Test()
-	public void t() throws IOException {
+	public void copyDemoProject() throws IOException {
 		Path target = tmpFolder.resolve("inner");
 		CopyProjectCommands cpc = new CopyProjectCommands();
 		cpc.setCopyHub(UtilForTe.createCopyHub());
-		
 		cpc.setIgnoreHub(UtilForTe.createIgnoreHub());
+		cpc.setPathAdjuster(UtilForTe.createPathAdjusterHub(new JavaPackagedFilePathAdjuster()));
 		
 		CopyResult cr = cpc.copyProject(origin.toFile(), target.toFile(), "com.demo.pk", "org.demo.pp");
-		
+
 		assertThat("all file should be copied.", cr.total(), equalTo(fileCount));
 		
 		List<CopyDescription> ignored = cr.getDescriptionMap().get(COPY_STATE.IGNORED);
@@ -67,11 +71,13 @@ public class TestCopyProject {
 		});
 		assertThat(ignored.size(), equalTo(6));
 		
+		List<CopyDescription> directories = cr.getDescriptionMap().get(COPY_STATE.START);
+		
+//		assertTrue("some item's state are START.", directories.size() > 0);
+		
 		List<CopyDescription> fileCopyfailed = cr.getDescriptionMap().get(COPY_STATE.FILE_COPY_FAILED);
-		List<CopyDescription> dirCopyfailed = cr.getDescriptionMap().get(COPY_STATE.DIR_CREATE_FAILED);
 		
 		assertTrue("no file coping failed.", fileCopyfailed.isEmpty());
-		assertTrue("no directory coping failed.", dirCopyfailed.isEmpty());
 	}
 
 }
