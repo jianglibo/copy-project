@@ -14,6 +14,7 @@ import java.util.List;
 import com.go2wheel.copyproject.copyperformer.CopyHub;
 import com.go2wheel.copyproject.copyperformer.CopyPerformer;
 import com.go2wheel.copyproject.copyperformer.DefaultCopyPerformer;
+import com.go2wheel.copyproject.copyperformer.DirectoryCopyPerformer;
 import com.go2wheel.copyproject.ignorechecker.GlobIgnoreChecker;
 import com.go2wheel.copyproject.ignorechecker.IgnoreChecker;
 import com.go2wheel.copyproject.ignorechecker.IgnoreCheckerHub;
@@ -38,6 +39,7 @@ public class UtilForTe {
 		List<CopyPerformer> cesl = new ArrayList<>();
 		cesl.addAll(Arrays.asList(ces));
 		cesl.add(new DefaultCopyPerformer());
+		cesl.add(new DirectoryCopyPerformer());
 		ch.setCopyExecutors(cesl);
 		return ch;
 	}

@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import com.go2wheel.copyproject.UtilForTe;
 import com.go2wheel.copyproject.commands.CopyProjectCommands;
+import com.go2wheel.copyproject.pathadjuster.JavaPackagedFilePathAdjuster;
 import com.go2wheel.copyproject.value.CopyEnv;
 
 public class TestJavaSourceFileCopy {
@@ -26,8 +27,8 @@ public class TestJavaSourceFileCopy {
 		if (srcPath != null) {
 			UtilForTe.deleteFolder(srcPath);
 		}
-		if (dstPath != null) {
-			UtilForTe.deleteFolder(srcPath);	
+		if (dstPath != null && Files.exists(dstPath)) {
+			UtilForTe.deleteFolder(dstPath);	
 		}
 		srcPath = null;
 		dstPath = null;
@@ -57,7 +58,7 @@ public class TestJavaSourceFileCopy {
 		CopyProjectCommands cpc = new CopyProjectCommands();
 		cpc.setCopyHub(UtilForTe.createCopyHub(new JavaSourceFileCopy()));
 		cpc.setIgnoreHub(UtilForTe.createIgnoreHub());
-		cpc.setPathAdjuster(UtilForTe.createPathAdjusterHub());
+		cpc.setPathAdjuster(UtilForTe.createPathAdjusterHub(new JavaPackagedFilePathAdjuster()));
 		
 		srcPath = UtilForTe.createFileTree("a/b/c.java", "a/b/c/java.txt");
 		dstPath = UtilForTe.createTmpDirectory().resolve("ya");
@@ -66,6 +67,7 @@ public class TestJavaSourceFileCopy {
 		Files.write(srcPath.resolve("a/b/java.txt"), Arrays.asList("package a.b.c.d;", "# a1b1c1d;"));
 		
 		cpc.copyProject(srcPath.toFile(), dstPath.toFile(), "a.b.c", "d.e.f");
+		
 		List<String> lines1 = Files.readAllLines(dstPath.resolve("a/b/c.java"));
 		List<String> lines2 = Files.readAllLines(dstPath.resolve("a/b/java.txt"));
 		

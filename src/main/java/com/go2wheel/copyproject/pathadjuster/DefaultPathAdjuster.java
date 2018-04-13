@@ -15,8 +15,7 @@ public class DefaultPathAdjuster implements PathAdjuster {
 	@Override
 	public StepResult<Void> adjust(CopyEnv copyEnv, CopyDescription copyDescription) {
 		if (copyDescription.getDstAb() == null) {
-			String replaced = copyDescription.getSrcRelative().toString().replace('\\', '/').replace(copyEnv.getSrcRootPackageSlash(), copyEnv.getDstRootPackageSlash());
-			copyDescription.setDstAb(copyEnv.getDstFolder().resolve(replaced));
+			copyDescription.setDstAb(copyEnv.getDstFolder().resolve(copyDescription.getSrcRelative()));
 		}
 		return StepResult.tsudukuStepResult();
 	}
