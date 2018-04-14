@@ -13,5 +13,7 @@ public interface PathAdjuster {
 	default boolean isSourceAfile(CopyDescription copyDescription) {
 		return Files.isRegularFile(copyDescription.getSrcAbsolute());
 	}
+	
+	String name();
 
 }

@@ -4,7 +4,14 @@ spring:
       enabled: true
     script:
       enabled: true
-
+copyconfig:
+  disablebuiltins:
+    performers:
+      - name.of.performer
+    ignorecheckers:
+      - name.of.checker
+    pathadjusters:
+      - name.of.adjuster
 ---
 spring:
     profiles: dev

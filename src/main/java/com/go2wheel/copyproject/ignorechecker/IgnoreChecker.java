@@ -9,5 +9,7 @@ public interface IgnoreChecker {
 	StepResult<Boolean> ignore(CopyEnv copyEnv, CopyDescription copyDescription);
 	
 	void initCondition(CopyEnv copyEnv);
+	
+	String name();
 
 }

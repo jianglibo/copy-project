@@ -38,4 +38,9 @@ public class GlobIgnoreChecker implements IgnoreChecker {
 			matchers = GitIgnoreFileReader.ignoreMatchers(ignoreFile);
 		}
 	}
+
+	@Override
+	public String name() {
+		return "glob";
+	}
 }

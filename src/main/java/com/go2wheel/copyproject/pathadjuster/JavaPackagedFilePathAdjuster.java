@@ -25,4 +25,9 @@ public class JavaPackagedFilePathAdjuster implements PathAdjuster {
 		return StepResult.tsudukuStepResult();
 	}
 
+	@Override
+	public String name() {
+		return "files-in-java-package";
+	}
+
 }

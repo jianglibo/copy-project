@@ -23,6 +23,7 @@ gradle-app.setting
 .gradletasknamecache 
 
 application.yaml
+application.yml
 mrjars/
 hadoop-config.xml
 jobproperties/**/*.job

@@ -34,4 +34,9 @@ public class DefaultCopyPerformer implements CopyPerformer {
 		}
 		return StepResult.tsudukuStepResult();
 	}
+
+	@Override
+	public String name() {
+		return "file";
+	}
 }

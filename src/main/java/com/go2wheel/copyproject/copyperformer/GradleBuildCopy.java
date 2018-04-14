@@ -8,24 +8,21 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import com.go2wheel.copyproject.util.PathUtil;
 import com.go2wheel.copyproject.value.CopyDescription;
-import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 import com.go2wheel.copyproject.value.CopyEnv;
 import com.go2wheel.copyproject.value.StepResult;
+import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 
-@Component
-public class JavaSourceFileCopy implements CopyPerformer {
-
-	private Logger logger = LoggerFactory.getLogger(JavaSourceFileCopy.class);
+public class GradleBuildCopy implements CopyPerformer {
+	
+	private Logger logger = LoggerFactory.getLogger(GradleBuildCopy.class);
 
 	@Override
 	public StepResult<Void> copy(CopyEnv copyEnv, CopyDescription copyDescription) {
 		Path target = fileToProcess(copyDescription);
 		createParentDirectories(copyDescription);
-		if (!"java".equalsIgnoreCase(PathUtil.getExtWithoutDot(copyDescription.getSrcAbsolute()))) {
+		if (!"build.gradle".equalsIgnoreCase(copyDescription.getSrcFileName())) {
 			return StepResult.tsudukuStepResult();
 		}
 		try {
@@ -39,10 +36,10 @@ public class JavaSourceFileCopy implements CopyPerformer {
 			return StepResult.tsudukanaiStepResult();
 		}
 	}
-	
+
 	@Override
 	public String name() {
-		return "java-source";
+		return "build-gradle";
 	}
 
 }

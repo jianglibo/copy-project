@@ -17,13 +17,9 @@ public class GlobIgnoreChecker implements IgnoreChecker {
 	private List<PathMatcher> matchers = new ArrayList<>();
 
 	@Override
-	public boolean stopCheckNext() {
-		return false;
-	}
-
-	@Override
-	public boolean ignore(CopyEnv copyEnv, CopyDescription copyDescription) {
-		return matchers.stream().anyMatch(pm -> pm.matches(copyDescription.getSrcRelative()));
+	public StepResult<Boolean> ignore(CopyEnv copyEnv, CopyDescription copyDescription) {
+		boolean b = matchers.stream().anyMatch(pm -> pm.matches(copyDescription.getSrcRelative()));
+		return new StepResult<Boolean>(b, false);
 	}
 
 	@Override
@@ -36,7 +32,45 @@ public class GlobIgnoreChecker implements IgnoreChecker {
 			matchers = GitIgnoreFileReader.ignoreMatchers(ignoreFile);
 		}
 	}
+
+	@Override
+	public String name() {
+		return "glob";
+	}
+}
+
 ```
+## 如何添加自定义路劲转换？
+
+下面的类将原来java包的路径转换成新的包的路径。
+
+@Component
+public class JavaPackagedFilePathAdjuster implements PathAdjuster {
+	
+	@Override
+	public StepResult<Void> adjust(CopyEnv copyEnv, CopyDescription copyDescription) {
+		if (copyDescription.getDstAb() == null) {
+			if (isSourceAfile(copyDescription)) {
+				String src = copyDescription.getSrcRelative().toString().replace('\\', '/');
+				String ptn = copyEnv.getSrcRootPackageSlash() + "/";
+				if (src.indexOf(ptn) != -1) {
+					String dst = src.replaceAll(copyEnv.getSrcRootPackageSlash(), copyEnv.getDstRootPackageSlash());
+					copyDescription.setDstAb(copyEnv.getDstFolder().resolve(dst));
+					return StepResult.tsudukanaiStepResult();
+				}
+			}
+		}
+		return StepResult.tsudukuStepResult();
+	}
+
+	@Override
+	public String name() {
+		return "files-in-java-package";
+	}
+
+}
+
+
 
 ## 如何添加自定义的复制？
 
@@ -44,24 +78,32 @@ public class GlobIgnoreChecker implements IgnoreChecker {
 
 ```java
 @Component
-@Priority(Integer.MAX_VALUE)
-public class DefaultCopyPerformer implements CopyPerformer {
-	
-	private Logger logger = LoggerFactory.getLogger(DefaultCopyPerformer.class);
+public class JavaSourceFileCopy implements CopyPerformer {
+
+	private Logger logger = LoggerFactory.getLogger(JavaSourceFileCopy.class);
 
 	@Override
-	public boolean copy(CopyEnv copyEnv, CopyDescription copyDescription) {
+	public StepResult<Void> copy(CopyEnv copyEnv, CopyDescription copyDescription) {
+		Path target = fileToProcess(copyDescription);
+		createParentDirectories(copyDescription);
+		if (!"java".equalsIgnoreCase(PathUtil.getExtWithoutDot(copyDescription.getSrcAbsolute()))) {
+			return StepResult.tsudukuStepResult();
+		}
 		try {
-			if (Files.exists(copyDescription.getDstAb())) {
-				return true;
-			}
-			Files.copy(copyDescription.getSrcAb(), copyDescription.getDstAb());
-			copyDescription.setState(COPY_STATE.FILE_COPY_SUCCESSED);
+			List<String> lines = Files.readAllLines(target);
+			lines = lines.stream().map(line -> replaceNewPackageName(copyEnv, line)).collect(Collectors.toList());
+			Files.write(copyDescription.getDstAb(), lines);
+			return StepResult.tsudukuStepResult();
 		} catch (IOException e) {
 			logger.info(e.getMessage());
 			copyDescription.setState(COPY_STATE.FILE_COPY_FAILED);
+			return StepResult.tsudukanaiStepResult();
 		}
-		return true;
+	}
+	
+	@Override
+	public String name() {
+		return "java-source";
 	}
 
 }

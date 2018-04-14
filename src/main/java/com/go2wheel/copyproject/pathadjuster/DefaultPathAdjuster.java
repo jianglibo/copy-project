@@ -20,4 +20,9 @@ public class DefaultPathAdjuster implements PathAdjuster {
 		return StepResult.tsudukuStepResult();
 	}
 
+	@Override
+	public String name() {
+		return "default-plain-copy";
+	}
+
 }

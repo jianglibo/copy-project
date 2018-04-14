@@ -9,6 +9,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import com.go2wheel.copyproject.copyperformer.CopyHub;
@@ -25,6 +26,14 @@ import com.go2wheel.copyproject.value.CopyEnv;
 
 public class UtilForTe {
 	
+	private static DisabledPlugin emptyDisabledPlugin() {
+		DisabledPlugin dp = new DisabledPlugin();
+		dp.setIgnorecheckers(new HashSet<>());
+		dp.setPathadjusters(new HashSet<>());
+		dp.setPerformers(new HashSet<>());
+		return dp;
+	}
+	
 	public static void printme(Object o) {
 		System.out.println(o);
 	}
@@ -36,6 +45,7 @@ public class UtilForTe {
 	
 	public static CopyHub createCopyHub(CopyPerformer...ces) {
 		CopyHub ch = new CopyHub();
+		ch.setDisabledPlugin(emptyDisabledPlugin());
 		List<CopyPerformer> cesl = new ArrayList<>();
 		cesl.addAll(Arrays.asList(ces));
 		cesl.add(new DefaultCopyPerformer());
@@ -47,6 +57,7 @@ public class UtilForTe {
 	
 	public static IgnoreCheckerHub createIgnoreHub(IgnoreChecker...igs) {
 		IgnoreCheckerHub igh = new IgnoreCheckerHub();
+		igh.setDisabledPlugin(emptyDisabledPlugin());
 		List<IgnoreChecker> cesl = new ArrayList<>();
 		cesl.addAll(Arrays.asList(igs));
 		if (igs.length == 0) {
@@ -58,6 +69,7 @@ public class UtilForTe {
 	
 	public static PathAdjusterHub createPathAdjusterHub(PathAdjuster...pas) {
 		PathAdjusterHub igh = new PathAdjusterHub();
+		igh.setDisabledPlugin(emptyDisabledPlugin());
 		List<PathAdjuster> cesl = new ArrayList<>();
 		cesl.addAll(Arrays.asList(pas));
 		cesl.add(new DefaultPathAdjuster());

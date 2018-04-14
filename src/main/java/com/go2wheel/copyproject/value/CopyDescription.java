@@ -1,20 +1,17 @@
 package com.go2wheel.copyproject.value;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class CopyDescription {
 
 	public static enum COPY_STATE {
-		START, IGNORED, FILE_COPY_FAILED, FILE_COPY_SUCCESSED 
+		START, IGNORED, DIR_DETECTED, FILE_COPY_FAILED, FILE_COPY_SUCCESSED 
 	}
 
 	private Path srcRelative;
 	private Path srcAb;
 	private Path dstAb;
 	
-	private final boolean directory;
-
 	private boolean relativePathChanged;
 
 	private COPY_STATE state = COPY_STATE.START;
@@ -22,7 +19,6 @@ public class CopyDescription {
 	public CopyDescription(Path srcFolder, Path srcRelative) {
 		this.srcRelative = srcRelative;
 		this.srcAb = srcFolder.resolve(srcRelative);
-		this.directory = Files.isDirectory(this.srcAb);
 	}
 
 	public CopyDescription(Path srcRelative, Path srcAb, Path dstAb, boolean relativePathChanged) {
@@ -31,8 +27,14 @@ public class CopyDescription {
 		this.srcAb = srcAb;
 		this.dstAb = dstAb;
 		this.setRelativePathChanged(relativePathChanged);
-		this.directory = Files.isDirectory(this.srcAb);
 		initMe();
+	}
+	
+	public String getSrcFileName() {
+		if (srcRelative != null) {
+			return srcRelative.getFileName().toString();
+		}
+		return null;
 	}
 
 	private void initMe() {
@@ -83,9 +85,4 @@ public class CopyDescription {
 	public void setState(COPY_STATE state) {
 		this.state = state;
 	}
-
-	public boolean isDirectory() {
-		return directory;
-	}
-
 }

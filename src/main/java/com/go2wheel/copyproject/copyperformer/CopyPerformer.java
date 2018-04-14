@@ -12,6 +12,8 @@ public interface CopyPerformer {
 	
 	StepResult<Void> copy(CopyEnv copyEnv, CopyDescription copyDescription);
 	
+	String name();
+	
 	default Path fileToProcess(CopyDescription copyDescription) {
 		if (Files.exists(copyDescription.getDstAb())) {
 			return copyDescription.getDstAb();
@@ -27,6 +29,10 @@ public interface CopyPerformer {
 			Files.createDirectories(parent);
 		} catch (IOException e) {
 		}
+	}
+	
+	default String replaceNewPackageName(CopyEnv copyEnv, String line) {
+		return line.replaceAll(copyEnv.getEscapedSrcRootPackageDot(), copyEnv.getDstRootPackageDot());
 	}
 	
 

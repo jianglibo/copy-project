@@ -29,3 +29,12 @@ if (eofOnEscapedNewLine && isEscapeChar(line, line.length() - 1)) {
 }
 
 Shell. set parameterResolvers.
+
+eclipse static import test package.
+Window > Preferences > Java > Editor > Content Assist > Favorites
+org.hamcrest.Matchers.*
+org.hamcrest.CoreMatchers.*
+org.junit.*
+org.junit.Assert.*
+org.junit.Assume.*
+org.junit.matchers.JUnitMatchers.*
