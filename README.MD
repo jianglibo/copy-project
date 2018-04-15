@@ -2,6 +2,11 @@
 
 如果您经常做类似的项目，十有八九会有一个像是模板的项目。此工具用来复制一个项目。除去不需要复制的部分，所有的源文件都会流过一连串的CopyPerformer，根据文件的特征执行相应的操作。比如对于JAVA源文件，可能需要修改文件内package语句的值。
 
+invoke "java -jar copy-project-boot.jar" to enter interactive shell.
+then type help for help.
+
+执行 java -jar copy-project-boot.jar 进入交互模式，键入help获取使用帮助，记住Tab键是你的好帮手。
+
 ## 如何忽略文件和目录？
 
 默认实现的是基于GLOB规则，可以处理源目录中.gitignore.如果不满足，可以自己模仿写一个。
