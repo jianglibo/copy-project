@@ -21,7 +21,7 @@ public class TestPerformerConfig {
 	
 	@Test
 	public void tExecutorNumbers() {
-		assertThat(copyHub.getCopyPerformers().size(), equalTo(3));
+		assertThat(copyHub.getCopyPerformers().size(), equalTo(4));
 		assertThat("last executor is defaultExecutor.", copyHub.getCopyPerformers().get(copyHub.getCopyPerformers().size() - 1).getClass(), equalTo(DefaultCopyPerformer.class));
 	}
 

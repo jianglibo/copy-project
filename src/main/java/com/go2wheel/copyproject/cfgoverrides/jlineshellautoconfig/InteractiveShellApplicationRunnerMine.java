@@ -1,5 +1,7 @@
 package com.go2wheel.copyproject.cfgoverrides.jlineshellautoconfig;
 
+import java.util.Collections;
+
 import org.jline.reader.LineReader;
 import org.jline.reader.Parser;
 import org.jline.reader.UserInterruptException;
@@ -7,7 +9,9 @@ import org.jline.utils.AttributedString;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.MapPropertySource;
 import org.springframework.shell.ExitRequest;
 import org.springframework.shell.Input;
 import org.springframework.shell.InputProvider;
@@ -23,7 +27,7 @@ import org.springframework.shell.jline.PromptProvider;
 @Order(InteractiveShellApplicationRunner.PRECEDENCE)
 public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner {
 
-
+	public static final String SPRING_SHELL_INTERACTIVE_ENABLED = "spring.shell.interactive";
 	private final LineReader lineReader;
 
 	private final PromptProvider promptProvider;
@@ -46,13 +50,21 @@ public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		boolean interactive = isEnabled();
+		if (interactive) {
 		InputProvider inputProvider = new JLineInputProvider(lineReader, promptProvider);
-//		try {
 			shell.run(inputProvider);
-//		} catch (Exception e) {
-//			System.out.println("1111111111111");
-//		}
+		}
 	}
+	
+	public static void disable(ConfigurableEnvironment environment) {
+		environment.getPropertySources().addFirst(new MapPropertySource("interactive.override",
+				Collections.singletonMap(SPRING_SHELL_INTERACTIVE_ENABLED, "false")));
+	}
+	
+//	public boolean isEnabled() {
+//		return environment.getProperty(SPRING_SHELL_INTERACTIVE_ENABLED,boolean.class,  true);
+//	}
 
 
 	public static class JLineInputProvider implements InputProvider {

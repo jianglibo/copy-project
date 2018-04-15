@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeExceptionMapper;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.shell.ExitRequest;
@@ -18,8 +18,8 @@ import org.springframework.shell.Shell;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.util.StringUtils;
 
-@TestConfiguration
-public class CopyProjectApplicationRunnerConfiguration {
+@Configuration
+public class ExecuteAndExitApplicationRunnerConfiguration {
 
 	@Autowired
 	private Shell shell;
