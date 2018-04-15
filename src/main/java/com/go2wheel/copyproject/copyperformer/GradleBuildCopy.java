@@ -8,12 +8,14 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.go2wheel.copyproject.value.CopyDescription;
 import com.go2wheel.copyproject.value.CopyEnv;
 import com.go2wheel.copyproject.value.StepResult;
 import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 
+@Component
 public class GradleBuildCopy implements CopyPerformer {
 	
 	private Logger logger = LoggerFactory.getLogger(GradleBuildCopy.class);

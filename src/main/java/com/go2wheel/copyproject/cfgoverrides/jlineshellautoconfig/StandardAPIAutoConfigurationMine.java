@@ -38,6 +38,11 @@ public class StandardAPIAutoConfigurationMine {
 	public ValueProvider fileValueProvider() {
 		return new FileValueProviderMine();
 	}
+	
+	@Bean
+	public ValueProvider packageValueProvider() {
+		return new PackageValueProvider();
+	}
 
 	@Bean
 	public MethodTargetRegistrar standardMethodTargetResolver() {
