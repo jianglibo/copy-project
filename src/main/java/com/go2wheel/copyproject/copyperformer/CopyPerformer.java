@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.go2wheel.copyproject.value.CopyDescription;
+import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 import com.go2wheel.copyproject.value.CopyEnv;
 import com.go2wheel.copyproject.value.StepResult;
 
@@ -33,6 +34,10 @@ public interface CopyPerformer {
 	
 	default String replaceNewPackageName(CopyEnv copyEnv, String line) {
 		return line.replaceAll(copyEnv.getEscapedSrcRootPackageDot(), copyEnv.getDstRootPackageDot());
+	}
+	
+	default void setFileCopySuccessState(CopyDescription copyDescription) {
+		copyDescription.setState(COPY_STATE.FILE_COPY_SUCCESSED);
 	}
 	
 

@@ -20,6 +20,8 @@ import org.springframework.shell.ResultHandler;
 import org.springframework.shell.Shell;
 import org.springframework.shell.SpringShellAutoConfiguration;
 
+import com.go2wheel.copyproject.resulthandler.ResultHandlerConfigMine;
+
 /**
  * copy from @see {@link SpringShellAutoConfiguration}
  * @author jianglibo@gmail.com

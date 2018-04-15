@@ -15,6 +15,9 @@ import org.springframework.shell.standard.StandardMethodTargetRegistrar;
 import org.springframework.shell.standard.StandardParameterResolver;
 import org.springframework.shell.standard.ValueProvider;
 
+import com.go2wheel.copyproject.valueprovider.FileValueProviderMine;
+import com.go2wheel.copyproject.valueprovider.PackageValueProvider;
+
 /**
  * copy from {@link StandardAPIAutoConfiguration}
  * @author jianglibo@gmail.com

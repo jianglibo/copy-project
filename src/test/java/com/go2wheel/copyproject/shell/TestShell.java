@@ -17,7 +17,7 @@ import org.springframework.shell.Shell;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.go2wheel.copyproject.UtilForTe;
-import com.go2wheel.copyproject.cfgoverrides.springshellautoconfig.TypeHierarchyResultHandlerMine;
+import com.go2wheel.copyproject.resulthandler.TypeHierarchyResultHandlerMine;
 
 @SpringBootTest("spring.shell.interactive.enabled=false")
 @RunWith(SpringRunner.class)

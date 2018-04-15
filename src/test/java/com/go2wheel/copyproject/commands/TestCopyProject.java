@@ -65,15 +65,11 @@ public class TestCopyProject {
 
 		assertThat("all file should be copied.", cr.total(), equalTo(fileCount));
 		
-		List<CopyDescription> ignored = cr.getDescriptionMap().get(COPY_STATE.IGNORED);
-		ignored.forEach(cd -> {
-			System.out.println(cd.getSrcAbsolute());
-		});
-		assertThat(ignored.size(), equalTo(6));
+		assertThat(cr.getCountMap().get(COPY_STATE.IGNORED), equalTo(6L));
 		
 		List<CopyDescription> directories = cr.getDescriptionMap().get(COPY_STATE.START);
 		
-//		assertTrue("some item's state are START.", directories.size() > 0);
+		assertTrue("no item's state are START.", directories.size() == 0);
 		
 		List<CopyDescription> fileCopyfailed = cr.getDescriptionMap().get(COPY_STATE.FILE_COPY_FAILED);
 		

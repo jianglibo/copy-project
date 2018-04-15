@@ -14,6 +14,10 @@ public class StepResult<T> {
 		return new StepResult<>(false); 
 	}
 
+	@Override
+	public String toString() {
+		return String.format("tsuduku: %s, result: %s", isTsuduku(), getResult());
+	}
 	
 	public StepResult(boolean tsuduku) {
 		this.setTsuduku(tsuduku);

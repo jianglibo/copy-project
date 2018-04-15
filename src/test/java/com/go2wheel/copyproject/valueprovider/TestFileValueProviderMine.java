@@ -1,4 +1,4 @@
-package com.go2wheel.copyproject.cfgoverrides.jlineshellautoconfig;
+package com.go2wheel.copyproject.valueprovider;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -16,6 +16,7 @@ import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
 
 import com.go2wheel.copyproject.UtilForTe;
+import com.go2wheel.copyproject.valueprovider.FileValueProviderMine;
 
 public class TestFileValueProviderMine {
 	

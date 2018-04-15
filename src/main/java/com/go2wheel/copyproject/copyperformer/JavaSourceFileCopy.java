@@ -32,6 +32,7 @@ public class JavaSourceFileCopy implements CopyPerformer {
 			List<String> lines = Files.readAllLines(target);
 			lines = lines.stream().map(line -> replaceNewPackageName(copyEnv, line)).collect(Collectors.toList());
 			Files.write(copyDescription.getDstAb(), lines);
+			setFileCopySuccessState(copyDescription);
 			return StepResult.tsudukuStepResult();
 		} catch (IOException e) {
 			logger.info(e.getMessage());

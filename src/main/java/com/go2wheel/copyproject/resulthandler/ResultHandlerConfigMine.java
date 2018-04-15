@@ -1,4 +1,4 @@
-package com.go2wheel.copyproject.cfgoverrides.springshellautoconfig;
+package com.go2wheel.copyproject.resulthandler;
 
 import javax.annotation.PostConstruct;
 
@@ -26,6 +26,11 @@ public class ResultHandlerConfigMine {
 	@Qualifier("main")
 	public ResultHandler<?> mainResultHandler() {
 		return new TypeHierarchyResultHandlerMine();
+	}
+	
+	@Bean
+	public CopyResultHandler copyResultHandler() {
+		return new CopyResultHandler();
 	}
 
 	@Bean

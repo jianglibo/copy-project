@@ -1,4 +1,4 @@
-package com.go2wheel.copyproject.cfgoverrides.springshellautoconfig;
+package com.go2wheel.copyproject.resulthandler;
 
 import org.springframework.shell.ResultHandler;
 

@@ -1,4 +1,4 @@
-package com.go2wheel.copyproject.cfgoverrides.jlineshellautoconfig;
+package com.go2wheel.copyproject.valueprovider;
 
 import static java.nio.file.FileVisitOption.FOLLOW_LINKS;
 

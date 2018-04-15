@@ -13,6 +13,8 @@ public class CopyResult {
 
 	private Map<COPY_STATE, List<CopyDescription>> descriptionMap  = new HashMap<>();
 	
+	private boolean detailed = false;
+	
 	public CopyResult() {
 		initMap();
 	}
@@ -34,6 +36,8 @@ public class CopyResult {
     	countMap.put(thatState, nl);
     	switch (thatState) {
 		case FILE_COPY_SUCCESSED:
+		case IGNORED:
+		case DIR_DETECTED:
 			break;
 		default:
 			descriptionMap.get(cd.getState()).add(cd);
@@ -63,6 +67,15 @@ public class CopyResult {
 
 	public void setDescriptionMap(Map<COPY_STATE, List<CopyDescription>> descriptionMap) {
 		this.descriptionMap = descriptionMap;
+	}
+
+	public boolean isDetailed() {
+		return detailed;
+	}
+
+	public CopyResult setDetailed(boolean detailed) {
+		this.detailed = detailed;
+		return this;
 	}
 	
 }

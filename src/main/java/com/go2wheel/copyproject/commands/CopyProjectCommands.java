@@ -23,6 +23,7 @@ import com.go2wheel.copyproject.exception.FilesWalkException;
 import com.go2wheel.copyproject.exception.SrcFolderNotExistException;
 import com.go2wheel.copyproject.ignorechecker.IgnoreChecker;
 import com.go2wheel.copyproject.pathadjuster.PathAdjuster;
+import com.go2wheel.copyproject.resulthandler.CopyResultHandler;
 import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 import com.go2wheel.copyproject.value.CopyDescription;
 import com.go2wheel.copyproject.value.CopyEnv;
@@ -44,6 +45,18 @@ public class CopyProjectCommands {
 	private IgnoreChecker ignoreHub;
 
 	private PathAdjuster pathAdjuster;
+	
+	@Autowired
+	private CopyResultHandler copyResultHandler;
+	
+	@ShellMethod(value = "Get the last copy result.")
+	public CopyResult copyResult() {
+		if (copyResultHandler.getLastCopyResult() != null) {
+			return copyResultHandler.getLastCopyResult().setDetailed(true);
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Validates happen before command execution.
