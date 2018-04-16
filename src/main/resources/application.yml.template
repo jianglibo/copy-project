@@ -12,10 +12,17 @@ copyconfig:
       - name.of.checker
     pathadjusters:
       - name.of.adjuster
+logging:
+  level:
+    root: WARN
+    org.springframework: WARN
+    com.go2wheel: WARN
 ---
 spring:
     profiles: dev
 logging:
   level:
+    root: WARN
     org.springframework: INFO
+    com.go2wheel: INFO
     

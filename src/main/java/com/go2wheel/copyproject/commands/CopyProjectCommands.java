@@ -28,6 +28,7 @@ import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 import com.go2wheel.copyproject.value.CopyDescription;
 import com.go2wheel.copyproject.value.CopyEnv;
 import com.go2wheel.copyproject.value.CopyResult;
+import com.go2wheel.copyproject.value.CopyResult.CopyResultType;
 import com.go2wheel.copyproject.value.StepResult;
 
 @ShellComponent()
@@ -45,17 +46,16 @@ public class CopyProjectCommands {
 	private IgnoreChecker ignoreHub;
 
 	private PathAdjuster pathAdjuster;
-	
+
 	@Autowired
 	private CopyResultHandler copyResultHandler;
-	
+
 	@ShellMethod(value = "Get the last copy result.")
 	public CopyResult copyResult() {
-		if (copyResultHandler.getLastCopyResult() != null) {
-			return copyResultHandler.getLastCopyResult().setDetailed(true);
-		} else {
-			return null;
+		if (copyResultHandler.getLastCopyResult() == null) {
+			return CopyResult.emptyResult();
 		}
+		return copyResultHandler.getLastCopyResult().changeResultType(CopyResultType.DETAILED);
 	}
 
 	/**
@@ -67,7 +67,8 @@ public class CopyProjectCommands {
 	 * @param dstRootPackage
 	 */
 	@ShellMethod(value = "copy a project from an existing project.")
-	public CopyResult copyProject(@ShellOption(help = "The project folder to copy from. Must exist.") @NotNull File srcFolder,
+	public CopyResult copyProject(
+			@ShellOption(help = "The project folder to copy from. Must exist.") @NotNull File srcFolder,
 			@ShellOption(help = "The folder copy to. Mustn't exist.") @NotNull File dstFolder,
 			@ShellOption(defaultValue = "no.source.root.package") @Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String srcRootPackage,
 			@ShellOption(defaultValue = "no.dst.root.package") @Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String dstRootPackage) {

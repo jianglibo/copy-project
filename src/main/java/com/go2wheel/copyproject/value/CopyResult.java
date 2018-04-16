@@ -9,11 +9,21 @@ import com.go2wheel.copyproject.value.CopyDescription.COPY_STATE;
 
 public class CopyResult {
 	
+	public static enum CopyResultType {
+		NORMAL, DETAILED, NO_RESULT
+	}
+	
 	private Map<COPY_STATE, Long> countMap = new HashMap<>();
 
 	private Map<COPY_STATE, List<CopyDescription>> descriptionMap  = new HashMap<>();
 	
-	private boolean detailed = false;
+	private CopyResultType resultType = CopyResultType.NORMAL;
+	
+	public static CopyResult emptyResult() {
+		CopyResult cr = new CopyResult();
+		cr.setResultType(CopyResultType.NO_RESULT);
+		return cr;
+	}
 	
 	public CopyResult() {
 		initMap();
@@ -69,12 +79,16 @@ public class CopyResult {
 		this.descriptionMap = descriptionMap;
 	}
 
-	public boolean isDetailed() {
-		return detailed;
+	public CopyResultType getResultType() {
+		return resultType;
 	}
 
-	public CopyResult setDetailed(boolean detailed) {
-		this.detailed = detailed;
+	public void setResultType(CopyResultType resultType) {
+		this.resultType = resultType;
+	}
+	
+	public CopyResult changeResultType(CopyResultType crt) {
+		this.setResultType(crt);
 		return this;
 	}
 	

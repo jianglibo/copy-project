@@ -26,6 +26,8 @@ import org.springframework.shell.jline.PromptProvider;
  */
 @Order(InteractiveShellApplicationRunner.PRECEDENCE)
 public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner {
+	
+	public static final int PRECEDENCE = 0;
 
 	public static final String SPRING_SHELL_INTERACTIVE_ENABLED = "spring.shell.interactive";
 	private final LineReader lineReader;
@@ -37,7 +39,6 @@ public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner
 
 	private final Shell shell;
 
-	@SuppressWarnings("unused")
 	private final Environment environment;
 
 	public InteractiveShellApplicationRunnerMine(LineReader lineReader, PromptProvider promptProvider, Parser parser, Shell shell, Environment environment) {
@@ -62,9 +63,9 @@ public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner
 				Collections.singletonMap(SPRING_SHELL_INTERACTIVE_ENABLED, "false")));
 	}
 	
-//	public boolean isEnabled() {
-//		return environment.getProperty(SPRING_SHELL_INTERACTIVE_ENABLED,boolean.class,  true);
-//	}
+	public boolean isEnabled() {
+		return environment.getProperty(SPRING_SHELL_INTERACTIVE_ENABLED,boolean.class,  true);
+	}
 
 
 	public static class JLineInputProvider implements InputProvider {
@@ -96,8 +97,8 @@ public class InteractiveShellApplicationRunnerMine  implements ApplicationRunner
 	}
 
 
-	public boolean isEnabled() {
-		return true;
-	}
+//	public boolean isEnabled() {
+//		return true;
+//	}
 
 }

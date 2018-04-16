@@ -2,8 +2,8 @@ package com.go2wheel.copyproject;
 
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.shell.SpringShellAutoConfiguration;
@@ -27,8 +27,8 @@ public class StartPointer {
 	public static void main(String[] args) throws Exception {
         String[] disabledCommands = {"--spring.shell.command.stacktrace.enabled=false"}; 
         String[] fullArgs = StringUtils.concatenateStringArrays(args, disabledCommands);
-        
-		ConfigurableApplicationContext context = SpringApplication.run(StartPointer.class, fullArgs);
+        ConfigurableApplicationContext context = new SpringApplicationBuilder(StartPointer.class).logStartupInfo(false).run(fullArgs);
+//		ConfigurableApplicationContext context = SpringApplication.run(StartPointer.class, fullArgs);
 	}
 	
 	@Bean
