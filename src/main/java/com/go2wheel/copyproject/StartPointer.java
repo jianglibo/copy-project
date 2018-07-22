@@ -6,10 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.shell.SpringShellAutoConfiguration;
-import org.springframework.shell.jline.JLineShellAutoConfiguration;
 import org.springframework.shell.jline.PromptProvider;
-import org.springframework.shell.standard.StandardAPIAutoConfiguration;
 import org.springframework.util.StringUtils;
 
 /**
@@ -20,7 +17,7 @@ import org.springframework.util.StringUtils;
 
 // StandardAPIAutoConfiguration
 
-@SpringBootApplication(exclude= {SpringShellAutoConfiguration.class, JLineShellAutoConfiguration.class, StandardAPIAutoConfiguration.class})
+@SpringBootApplication(exclude= {})
 public class StartPointer {
 
 	@SuppressWarnings("unused")

@@ -17,7 +17,6 @@ import org.springframework.shell.Shell;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.go2wheel.copyproject.UtilForTe;
-import com.go2wheel.copyproject.resulthandler.TypeHierarchyResultHandlerMine;
 
 @SpringBootTest("spring.shell.interactive.enabled=false")
 @RunWith(SpringRunner.class)
@@ -40,15 +39,6 @@ public class TestShell {
 	@Qualifier("main")
 	private ResultHandler resultHandler;
 	
-	@Test
-	public void tShell() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		UtilForTe.printme(shell.listCommands());
-		assertTrue("should contain clear command", shell.listCommands().containsKey("clear"));
-		MethodTarget mt = shell.listCommands().get("clear");
-		mt.getMethod().invoke(mt.getBean());
-		UtilForTe.printme(mt.getBean());
-		assertTrue("should be instance of TypeHierarchyResultHandler", resultHandler instanceof TypeHierarchyResultHandlerMine);
-		
-	}
+
 
 }
