@@ -40,14 +40,14 @@ public class PackageValueProvider  implements ValueProvider {
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
 
-        String input = completionContext.currentWordUpToCursor();
+    	String input = completionContext.currentWordUpToCursor();
         // The input may be -- or --xxx. Because it's might a positional parameter.
         if (input.startsWith("-")) {
         	return new ArrayList<>();
         }
         List<String> words = completionContext.getWords();
         String srcFolder = getSrcFolder(words);
-        if (srcFolder != null) {
+        if (srcFolder != null && Files.exists(Paths.get(srcFolder))) {
         	return getCandidates(srcFolder, input).stream().map(CompletionProposal::new).collect(Collectors.toList());
         }
         return new ArrayList<>();

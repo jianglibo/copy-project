@@ -16,14 +16,14 @@ import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
 
 import com.go2wheel.copyproject.UtilForTe;
-import com.go2wheel.copyproject.valueprovider.FileValueProviderMine;
+import com.go2wheel.copyproject.valueprovider.PathValueProviderMine;
 
 public class TestFileValueProviderMine {
 	
 	@Test
 	public void tEmpty() {
 		CompletionContext cc = new CompletionContext(Arrays.asList("-"), 0, 1);
-		FileValueProviderMine fvpm = new FileValueProviderMine();
+		PathValueProviderMine fvpm = new PathValueProviderMine();
 		List<CompletionProposal> lcp = fvpm.complete(null, cc, new String[] {});
 		assertThat("should be empty", lcp.size(), equalTo(0));
 	}
@@ -31,7 +31,7 @@ public class TestFileValueProviderMine {
 	@Test
 	public void tTwoDotAndSlash() throws IOException {
 		CompletionContext cc = new CompletionContext(Arrays.asList("../"), 0, 3);
-		FileValueProviderMine fvpm = new FileValueProviderMine();
+		PathValueProviderMine fvpm = new PathValueProviderMine();
 		Path d = Paths.get("..").toAbsolutePath();
 		UtilForTe.printme(d);
 		UtilForTe.printme(Files.list(d).count());
@@ -42,7 +42,7 @@ public class TestFileValueProviderMine {
 	@Test
 	public void tTwoDot() throws IOException {
 		CompletionContext cc = new CompletionContext(Arrays.asList(".."), 0, 2);
-		FileValueProviderMine fvpm = new FileValueProviderMine();
+		PathValueProviderMine fvpm = new PathValueProviderMine();
 		Path d = Paths.get("..").toAbsolutePath();
 		List<CompletionProposal> lcp = fvpm.complete(null, cc, new String[] {});
 		long count = lcp.stream().map(c -> c.value().startsWith("../")).filter(t -> t).count();
@@ -53,7 +53,7 @@ public class TestFileValueProviderMine {
 	@Test
 	public void tNoneExists() {
 		CompletionContext cc = new CompletionContext(Arrays.asList("ab/"), 0, 3);
-		FileValueProviderMine fvpm = new FileValueProviderMine();
+		PathValueProviderMine fvpm = new PathValueProviderMine();
 		List<CompletionProposal> lcp = fvpm.complete(null, cc, new String[] {});
 		assertThat("should be empty", lcp.size(), equalTo(0));
 	}

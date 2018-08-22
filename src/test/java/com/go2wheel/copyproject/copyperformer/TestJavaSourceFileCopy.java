@@ -66,7 +66,7 @@ public class TestJavaSourceFileCopy {
 		Files.write(srcPath.resolve("a/b/c.java"), Arrays.asList("package a.b.c.d;", "# a1b1c1d;"));
 		Files.write(srcPath.resolve("a/b/java.txt"), Arrays.asList("package a.b.c.d;", "# a1b1c1d;"));
 		
-		cpc.copyProject(srcPath.toFile(), dstPath.toFile(), "a.b.c", "d.e.f");
+		cpc.copyProject(srcPath, dstPath, "a.b.c", "d.e.f");
 		
 		List<String> lines1 = Files.readAllLines(dstPath.resolve("a/b/c.java"));
 		List<String> lines2 = Files.readAllLines(dstPath.resolve("a/b/java.txt"));

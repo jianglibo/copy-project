@@ -27,8 +27,8 @@ import com.go2wheel.copyproject.resulthandler.ResultHandlerConfigMine;
  * @author jianglibo@gmail.com
  *
  */
-@Configuration
-@Import(ResultHandlerConfigMine.class)
+//@Configuration
+//@Import(ResultHandlerConfigMine.class)
 public class SpringShellAutoConfigurationMine {
 
 	@SuppressWarnings("rawtypes")

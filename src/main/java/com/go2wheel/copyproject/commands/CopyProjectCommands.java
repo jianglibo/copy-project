@@ -68,12 +68,12 @@ public class CopyProjectCommands {
 	 */
 	@ShellMethod(value = "copy a project from an existing project.")
 	public CopyResult copyProject(
-			@ShellOption(help = "The project folder to copy from. Must exist.") @NotNull File srcFolder,
-			@ShellOption(help = "The folder copy to. Mustn't exist.") @NotNull File dstFolder,
+			@ShellOption(help = "The project folder to copy from. Must exist.") @NotNull Path srcFolder,
+			@ShellOption(help = "The folder copy to. Mustn't exist.") @NotNull Path dstFolder,
 			@ShellOption(defaultValue = "no.source.root.package") @Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String srcRootPackage,
 			@ShellOption(defaultValue = "no.dst.root.package") @Pattern(regexp = "^([a-z][a-z0-9]*?\\.?)*([a-z][a-z0-9]*?)+$") String dstRootPackage) {
-		copyEnv = new CopyEnv(srcFolder.toPath().toAbsolutePath().normalize(),
-				dstFolder.toPath().toAbsolutePath().normalize(), srcRootPackage, dstRootPackage);
+		copyEnv = new CopyEnv(srcFolder.toAbsolutePath().normalize(),
+				dstFolder.toAbsolutePath().normalize(), srcRootPackage, dstRootPackage);
 		return doCopy(copyEnv);
 	}
 

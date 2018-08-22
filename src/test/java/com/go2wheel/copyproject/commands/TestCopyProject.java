@@ -50,7 +50,7 @@ public class TestCopyProject {
 	public void tTargetExists() throws IOException {
 		Path target = tmpFolder;
 		CopyProjectCommands cpc = new CopyProjectCommands();
-		cpc.copyProject(origin.toFile(), target.toFile(), "com.demo.pk", "org.demo.pp");
+		cpc.copyProject(origin, target, "com.demo.pk", "org.demo.pp");
 	}
 	
 	@Test()
@@ -61,7 +61,7 @@ public class TestCopyProject {
 		cpc.setIgnoreHub(UtilForTe.createIgnoreHub());
 		cpc.setPathAdjuster(UtilForTe.createPathAdjusterHub(new JavaPackagedFilePathAdjuster()));
 		
-		CopyResult cr = cpc.copyProject(origin.toFile(), target.toFile(), "com.demo.pk", "org.demo.pp");
+		CopyResult cr = cpc.copyProject(origin, target, "com.demo.pk", "org.demo.pp");
 
 		assertThat("all file should be copied.", cr.total(), equalTo(fileCount));
 		

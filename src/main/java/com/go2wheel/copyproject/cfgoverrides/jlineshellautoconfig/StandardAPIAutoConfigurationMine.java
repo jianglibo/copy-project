@@ -15,7 +15,7 @@ import org.springframework.shell.standard.StandardMethodTargetRegistrar;
 import org.springframework.shell.standard.StandardParameterResolver;
 import org.springframework.shell.standard.ValueProvider;
 
-import com.go2wheel.copyproject.valueprovider.FileValueProviderMine;
+import com.go2wheel.copyproject.valueprovider.PathValueProviderMine;
 import com.go2wheel.copyproject.valueprovider.PackageValueProvider;
 
 /**
@@ -27,19 +27,19 @@ import com.go2wheel.copyproject.valueprovider.PackageValueProvider;
 @Configuration
 public class StandardAPIAutoConfigurationMine {
 
-	@Bean
-	public ValueProvider commandValueProvider(@Lazy CommandRegistry commandRegistry) {
-		return new CommandValueProvider(commandRegistry);
-	}
+//	@Bean
+//	public ValueProvider commandValueProvider(@Lazy CommandRegistry commandRegistry) {
+//		return new CommandValueProvider(commandRegistry);
+//	}
+//
+//	@Bean
+//	public ValueProvider enumValueProvider() {
+//		return new EnumValueProvider();
+//	}
 
 	@Bean
-	public ValueProvider enumValueProvider() {
-		return new EnumValueProvider();
-	}
-
-	@Bean
-	public ValueProvider fileValueProvider() {
-		return new FileValueProviderMine();
+	public ValueProvider pathValueProvider() {
+		return new PathValueProviderMine();
 	}
 	
 	@Bean
@@ -47,13 +47,13 @@ public class StandardAPIAutoConfigurationMine {
 		return new PackageValueProvider();
 	}
 
-	@Bean
-	public MethodTargetRegistrar standardMethodTargetResolver() {
-		return new StandardMethodTargetRegistrar();
-	}
-
-	@Bean
-	public ParameterResolver standardParameterResolver(@Qualifier("spring-shell") ConversionService conversionService) {
-		return new StandardParameterResolver(conversionService);
-	}
+//	@Bean
+//	public MethodTargetRegistrar standardMethodTargetResolver() {
+//		return new StandardMethodTargetRegistrar();
+//	}
+//
+//	@Bean
+//	public ParameterResolver standardParameterResolver(@Qualifier("spring-shell") ConversionService conversionService) {
+//		return new StandardParameterResolver(conversionService);
+//	}
 }
