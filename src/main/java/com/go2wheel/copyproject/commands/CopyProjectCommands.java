@@ -91,7 +91,7 @@ public class CopyProjectCommands {
 	protected CopyResult do1(CopyEnv copyEnv) {
 
 		try (Stream<Path> files = Files.walk(copyEnv.getSrcFolder())) {
-			return files.map(p -> copyEnv.getSrcFolder().relativize(p).normalize())
+			CopyResult cr = files.map(p -> copyEnv.getSrcFolder().relativize(p).normalize())
 					.map(p -> new CopyDescription(copyEnv.getSrcFolder(), p)).map(copyDescription -> {
 						pathAdjuster.adjust(copyEnv, copyDescription);
 						return copyDescription;
@@ -111,6 +111,8 @@ public class CopyProjectCommands {
 						return copyDescription;
 
 					}).collect(CopyResult::new, CopyResult::accept, CopyResult::combine);
+			cr.addDescribeLine(String.format("copy task: %s -> %s", copyEnv.getSrcFolder().toAbsolutePath().toString(), copyEnv.getDstFolder().toAbsolutePath().toString()));
+			return cr;
 		} catch (IOException e) {
 			throw new FilesWalkException(e.getMessage());
 		}

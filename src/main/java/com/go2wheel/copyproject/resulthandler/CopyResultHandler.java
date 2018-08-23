@@ -12,8 +12,8 @@ import com.go2wheel.copyproject.value.CopyResult.CopyResultType;
 
 public class CopyResultHandler extends TerminalAwareResultHandler<CopyResult> {
 
-	private CopyResult lastCopyResult; 
-	
+	private CopyResult lastCopyResult;
+
 	@Override
 	protected void doHandleResult(CopyResult result) {
 		this.lastCopyResult = result;
@@ -22,13 +22,16 @@ public class CopyResultHandler extends TerminalAwareResultHandler<CopyResult> {
 			terminal.writer().println("No copy result exists for now.");
 			break;
 		default:
-			for(Entry<COPY_STATE, Long> entry: result.getCountMap().entrySet()) {
+			for (Entry<COPY_STATE, Long> entry : result.getCountMap().entrySet()) {
 				terminal.writer().println(String.format("%s: %s", entry.getKey(), entry.getValue()));
 			}
+			for (String line : result.getDescribes()) {
+				terminal.writer().println(line);
+			}
 			if (result.getResultType() == CopyResultType.DETAILED) {
-				for(Entry<COPY_STATE, List<CopyDescription>> entry: result.getDescriptionMap().entrySet()) {
+				for (Entry<COPY_STATE, List<CopyDescription>> entry : result.getDescriptionMap().entrySet()) {
 					terminal.writer().println(entry.getKey() + ":");
-					for(CopyDescription cd : entry.getValue()) {
+					for (CopyDescription cd : entry.getValue()) {
 						terminal.writer().println(cd.getSrcRelative());
 					}
 				}

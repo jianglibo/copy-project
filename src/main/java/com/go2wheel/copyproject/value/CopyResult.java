@@ -17,6 +17,8 @@ public class CopyResult {
 
 	private Map<COPY_STATE, List<CopyDescription>> descriptionMap  = new HashMap<>();
 	
+	private List<String> describes = new ArrayList<>();
+	
 	private CopyResultType resultType = CopyResultType.NORMAL;
 	
 	public static CopyResult emptyResult() {
@@ -90,6 +92,18 @@ public class CopyResult {
 	public CopyResult changeResultType(CopyResultType crt) {
 		this.setResultType(crt);
 		return this;
+	}
+	
+	public void addDescribeLine(String line) {
+		getDescribes().add(line);
+	}
+
+	public List<String> getDescribes() {
+		return describes;
+	}
+
+	public void setDescribes(List<String> describes) {
+		this.describes = describes;
 	}
 	
 }
